@@ -17,8 +17,6 @@ import {
   ResponsiveContainer,
   LabelList,
   Line,
-  RadialBarChart,
-  RadialBar,
 } from "recharts";
 import { Slider } from "@mui/material";
 import Header from "../components/header";
@@ -50,17 +48,17 @@ export default function Analytics() {
     };
   });
 
-  // Calculate averages for SA and BW
-  const calculateAverages = (data: typeof heatmapData) => {
-    const totalSA = data.reduce((sum, item) => sum + (item["South Africa"] || 0), 0);
-    const totalBW = data.reduce((sum, item) => sum + (item["Botswana"] || 0), 0);
-    return [
-      { country: "South Africa", average: totalSA / data.length },
-      { country: "Botswana", average: totalBW / data.length },
-    ];
-  };
-
-  const averageData = calculateAverages(heatmapData);
+  // 2) Bar chart — average carbon intensity per country
+  const barData = [
+    {
+      name: "Botswana",
+      intensity: avg(dataSets.bw.map(e => e["Carbon intensity gCO₂eq"]["kWh (direct)"])) * factor,
+    },
+    {
+      name: "South Africa",
+      intensity: avg(dataSets.za.map(e => e["Carbon intensity gCO₂eq"]["kWh (direct)"])) * factor,
+    },
+  ];
 
   // 3) Pie chart — renewable vs non-renewable mix
   const zaRE = avg(dataSets.za.map(e => e["Renewable energy percentage (RE%)"]));
@@ -131,16 +129,20 @@ export default function Analytics() {
         </div>
       </section>
 
-      {/* Average Carbon Intensity Chart */}
-      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
-        <h2 className="text-2xl font-bold mb-4">Average Carbon Intensity</h2>
+      {/* 2) Bar Chart */}
+      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">Avg Carbon Intensity by Country</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={averageData}>
+          <BarChart data={barData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="country" />
+            <XAxis dataKey="name" />
             <YAxis />
-            <RechartsTooltip />
-            <Bar dataKey="average" fill="#82ca9d" name="Average Intensity" />
+            <RechartsTooltip formatter={(v) => (typeof v === "number" ? `${v.toFixed(1)} gCO₂eq/kWh` : v)} />
+            <RechartsLegend />
+            <Bar dataKey="intensity" fill="#8884D8">
+              {/* show exact number above each bar */}
+              <LabelList dataKey="intensity" position="top" formatter={(v: number) => v.toFixed(1)} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </section>
