@@ -1,0 +1,189 @@
+Category,Country,Year,Variable,Value,Unit
+Socio-Economic,Angola,2022,Population,30355880,people
+Socio-Economic,Angola,2022,GDP,126.5,billion USD
+Socio-Economic,Angola,2022,GDP_per_capita,6800,USD
+Socio-Economic,Angola,2022,HDI,0.533,index
+Electricity,Angola,2023,Electrification_rate,41,%
+Electricity,Angola,2023,Rural_electrification,16,%
+Electricity,Angola,2023,Urban_electrification,69,%
+Emissions,Angola,2024,CO2_emissions,34763,ktCO2/year
+Emissions,Angola,2024,CO2_per_capita,1.15,tCO2/capita
+Energy_Mix,Angola,2023,Hydro_share,64,%
+Energy_Mix,Angola,2023,Fossil_share,34,%
+Energy_Mix,Angola,2023,RE_share,66,%
+Targets,Angola,2025,RE_capacity_target,800,MW
+Socio-Economic,Botswana,2022,Population,2249104,people
+Socio-Economic,Botswana,2022,GDP,17.38,billion USD
+Socio-Economic,Botswana,2022,GDP_per_capita,17000,USD
+Socio-Economic,Botswana,2022,HDI,0.698,index
+Electricity,Botswana,2023,Electrification_rate,61,%
+Electricity,Botswana,2023,Rural_electrification,37,%
+Electricity,Botswana,2023,Urban_electrification,78,%
+Emissions,Botswana,2024,CO2_emissions,7033,ktCO2/year
+Emissions,Botswana,2024,CO2_per_capita,3.13,tCO2/capita
+Energy_Mix,Botswana,2023,Fossil_share,100,%
+Energy_Mix,Botswana,2023,RE_share,0,%
+Targets,Botswana,2030,Electrification_target,100,%
+Socio-Economic,DRC,2022,Population,85281024,people
+Socio-Economic,DRC,2022,GDP,41.44,billion USD
+Socio-Economic,DRC,2022,GDP_per_capita,800,USD
+Socio-Economic,DRC,2022,HDI,0.435,index
+Electricity,DRC,2023,Electrification_rate,17,%
+Electricity,DRC,2023,Urban_electrification,78,%
+Emissions,DRC,2024,CO2_emissions,4672,ktCO2/year
+Emissions,DRC,2024,CO2_per_capita,0.06,tCO2/capita
+Energy_Mix,DRC,2023,Hydro_share,98,%
+Energy_Mix,DRC,2023,Fossil_share,2,%
+Energy_Mix,DRC,2023,RE_share,98,%
+Targets,DRC,2025,Electrification_target,60,%
+Socio-Economic,Eswatini,2022,Population,1087200,people
+Socio-Economic,Eswatini,2022,GDP,4.417,billion USD
+Socio-Economic,Eswatini,2022,GDP_per_capita,10100,USD
+Socio-Economic,Eswatini,2022,HDI,0.541,index
+Electricity,Eswatini,2023,Electrification_rate,66,%
+Electricity,Eswatini,2023,Rural_electrification,61,%
+Electricity,Eswatini,2023,Urban_electrification,83,%
+Emissions,Eswatini,2024,CO2_emissions,1203,ktCO2/year
+Emissions,Eswatini,2024,CO2_per_capita,1.11,tCO2/capita
+Energy_Mix,Eswatini,2023,RE_share,61,%
+Energy_Mix,Eswatini,2023,Fossil_share,39,%
+Targets,Eswatini,2030,RE_share_target,50,%
+Socio-Economic,Lesotho,2022,Population,1962461,people
+Socio-Economic,Lesotho,2022,GDP,2.749,billion USD
+Socio-Economic,Lesotho,2022,GDP_per_capita,3300,USD
+Socio-Economic,Lesotho,2022,HDI,0.497,index
+Electricity,Lesotho,2023,Electrification_rate,34,%
+Electricity,Lesotho,2023,Rural_electrification,16,%
+Electricity,Lesotho,2023,Urban_electrification,66,%
+Emissions,Lesotho,2024,CO2_emissions,2468,ktCO2/year
+Emissions,Lesotho,2024,CO2_per_capita,1.26,tCO2/capita
+Energy_Mix,Lesotho,2023,Hydro_share,99,%
+Energy_Mix,Lesotho,2023,RE_share,100,%
+Socio-Economic,Madagascar,2022,Population,25683610,people
+Socio-Economic,Madagascar,2022,GDP,11.5,billion USD
+Socio-Economic,Madagascar,2022,GDP_per_capita,1600,USD
+Socio-Economic,Madagascar,2022,HDI,0.512,index
+Electricity,Madagascar,2023,Electrification_rate,23,%
+Electricity,Madagascar,2023,Rural_electrification,17,%
+Electricity,Madagascar,2023,Urban_electrification,67,%
+Emissions,Madagascar,2024,CO2_emissions,3077,ktCO2/year
+Emissions,Madagascar,2024,CO2_per_capita,0.12,tCO2/capita
+Energy_Mix,Madagascar,2023,Fossil_share,74,%
+Energy_Mix,Madagascar,2023,RE_share,26,%
+Socio-Economic,Malawi,2022,Population,19842560,people
+Socio-Economic,Malawi,2022,GDP,6.24,billion USD
+Socio-Economic,Malawi,2022,GDP_per_capita,1200,USD
+Socio-Economic,Malawi,2022,HDI,0.476,index
+Electricity,Malawi,2023,Electrification_rate,11,%
+Electricity,Malawi,2023,Rural_electrification,4,%
+Electricity,Malawi,2023,Urban_electrification,42,%
+Emissions,Malawi,2024,CO2_emissions,1276,ktCO2/year
+Emissions,Malawi,2024,CO2_per_capita,0.06,tCO2/capita
+Energy_Mix,Malawi,2023,Hydro_share,93,%
+Energy_Mix,Malawi,2023,Fossil_share,1,%
+Energy_Mix,Malawi,2023,RE_share,99,%
+Targets,Malawi,2030,Electrification_target,30,%
+Socio-Economic,Mauritius,2022,Population,1364283,people
+Socio-Economic,Mauritius,2022,GDP,13.33,billion USD
+Socio-Economic,Mauritius,2022,GDP_per_capita,22300,USD
+Socio-Economic,Mauritius,2022,HDI,0.781,index
+Electricity,Mauritius,2023,Electrification_rate,100,%
+Emissions,Mauritius,2024,CO2_emissions,4228,ktCO2/year
+Emissions,Mauritius,2024,CO2_per_capita,3.1,tCO2/capita
+Energy_Mix,Mauritius,2023,Fossil_share,79,%
+Energy_Mix,Mauritius,2023,RE_share,21,%
+Targets,Mauritius,2025,RE_share_target,35,%
+Socio-Economic,Mozambique,2022,Population,27733789,people
+Socio-Economic,Mozambique,2022,GDP,12.59,billion USD
+Socio-Economic,Mozambique,2022,GDP_per_capita,1300,USD
+Socio-Economic,Mozambique,2022,HDI,0.418,index
+Electricity,Mozambique,2023,Electrification_rate,24,%
+Electricity,Mozambique,2023,Rural_electrification,5,%
+Electricity,Mozambique,2023,Urban_electrification,65,%
+Emissions,Mozambique,2024,CO2_emissions,8427,ktCO2/year
+Emissions,Mozambique,2024,CO2_per_capita,0.3,tCO2/capita
+Energy_Mix,Mozambique,2023,Hydro_share,83,%
+Energy_Mix,Mozambique,2023,Fossil_share,16,%
+Energy_Mix,Mozambique,2023,RE_share,84,%
+Targets,Mozambique,2024,RE_capacity_target,400,MW
+Socio-Economic,Namibia,2022,Population,2333224,people
+Socio-Economic,Namibia,2022,GDP,13.24,billion USD
+Socio-Economic,Namibia,2022,GDP_per_capita,11200,USD
+Socio-Economic,Namibia,2022,HDI,0.64,index
+Electricity,Namibia,2023,Electrification_rate,56,%
+Electricity,Namibia,2023,Rural_electrification,29,%
+Electricity,Namibia,2023,Urban_electrification,77,%
+Emissions,Namibia,2024,CO2_emissions,3755,ktCO2/year
+Emissions,Namibia,2024,CO2_per_capita,1.61,tCO2/capita
+Energy_Mix,Namibia,2023,Hydro_share,64,%
+Energy_Mix,Namibia,2023,Fossil_share,28,%
+Energy_Mix,Namibia,2023,RE_share,72,%
+Targets,Namibia,2030,RE_share_target,70,%
+Socio-Economic,Seychelles,2022,Population,94633,people
+Socio-Economic,Seychelles,2022,GDP,1.498,billion USD
+Socio-Economic,Seychelles,2022,GDP_per_capita,29300,USD
+Socio-Economic,Seychelles,2022,HDI,0.782,index
+Electricity,Seychelles,2023,Electrification_rate,100,%
+Emissions,Seychelles,2024,CO2_emissions,495,ktCO2/year
+Emissions,Seychelles,2024,CO2_per_capita,5.42,tCO2/capita
+Energy_Mix,Seychelles,2023,Fossil_share,91,%
+Energy_Mix,Seychelles,2023,RE_share,9,%
+Targets,Seychelles,2030,RE_share_target,20,%
+Socio-Economic,South Africa,2022,Population,55380210,people
+Socio-Economic,South Africa,2022,GDP,349.3,billion USD
+Socio-Economic,South Africa,2022,GDP_per_capita,13600,USD
+Socio-Economic,South Africa,2022,HDI,0.666,index
+Electricity,South Africa,2023,Electrification_rate,86,%
+Electricity,South Africa,2023,Rural_electrification,68,%
+Electricity,South Africa,2023,Urban_electrification,93,%
+Emissions,South Africa,2024,CO2_emissions,489772,ktCO2/year
+Emissions,South Africa,2024,CO2_per_capita,8.98,tCO2/capita
+Energy_Mix,South Africa,2023,Coal_share,85,%
+Energy_Mix,South Africa,2023,Nuclear_share,4,%
+Energy_Mix,South Africa,2023,RE_share,11,%
+Targets,South Africa,2030,RE_share_target,21,%
+Socio-Economic,Tanzania,2022,Population,55451343,people
+Socio-Economic,Tanzania,2022,GDP,51.76,billion USD
+Socio-Economic,Tanzania,2022,GDP_per_capita,3200,USD
+Socio-Economic,Tanzania,2022,HDI,0.531,index
+Electricity,Tanzania,2023,Electrification_rate,33,%
+Electricity,Tanzania,2023,Rural_electrification,17,%
+Electricity,Tanzania,2023,Urban_electrification,65,%
+Emissions,Tanzania,2024,CO2_emissions,11562,ktCO2/year
+Emissions,Tanzania,2024,CO2_per_capita,0.21,tCO2/capita
+Energy_Mix,Tanzania,2023,Fossil_share,55,%
+Energy_Mix,Tanzania,2023,RE_share,45,%
+Targets,Tanzania,2030,RE_share_target,5,%
+Socio-Economic,Zambia,2022,Population,16445079,people
+Socio-Economic,Zambia,2022,GDP,25.71,billion USD
+Socio-Economic,Zambia,2022,GDP_per_capita,4000,USD
+Socio-Economic,Zambia,2022,HDI,0.579,index
+Electricity,Zambia,2023,Electrification_rate,31,%
+Electricity,Zambia,2023,Rural_electrification,4,%
+Electricity,Zambia,2023,Urban_electrification,67,%
+Emissions,Zambia,2024,CO2_emissions,4503,ktCO2/year
+Emissions,Zambia,2024,CO2_per_capita,0.27,tCO2/capita
+Energy_Mix,Zambia,2023,Hydro_share,93,%
+Energy_Mix,Zambia,2023,Fossil_share,5,%
+Energy_Mix,Zambia,2023,RE_share,95,%
+Targets,Zambia,2020,RE_capacity_target,200,MW
+Socio-Economic,Zimbabwe,2022,Population,14030368,people
+Socio-Economic,Zimbabwe,2022,GDP,17.64,billion USD
+Socio-Economic,Zimbabwe,2022,GDP_per_capita,2300,USD
+Socio-Economic,Zimbabwe,2022,HDI,0.516,index
+Electricity,Zimbabwe,2023,Electrification_rate,38,%
+Electricity,Zimbabwe,2023,Rural_electrification,16,%
+Electricity,Zimbabwe,2023,Urban_electrification,86,%
+Emissions,Zimbabwe,2024,CO2_emissions,12020,ktCO2/year
+Emissions,Zimbabwe,2024,CO2_per_capita,0.86,tCO2/capita
+Energy_Mix,Zimbabwe,2023,Coal_share,58,%
+Energy_Mix,Zimbabwe,2023,Hydro_share,37,%
+Energy_Mix,Zimbabwe,2023,RE_share,42,%
+Targets,Zimbabwe,2030,RE_share_target,26.5,%
+Regional,SADC,2022,Population,341000000,people
+Regional,SADC,2023,Electrification_rate,48,%
+Regional,SADC,2023,Rural_electrification,32,%
+Regional,SADC,2023,Urban_electrification,75,%
+Regional,SADC,2023,RE_share,29,%
+Regional,SADC,2030,RE_target,39,%
+Regional,SADC,2030,Electrification_target,85.5,%

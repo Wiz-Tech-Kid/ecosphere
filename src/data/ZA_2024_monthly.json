@@ -1,0 +1,182 @@
+[
+ {
+   "Datetime (UTC)": "2024-01-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 630.86,
+      "kWh (Life cycle)": 687.22
+   },
+   "Carbon-free energy percentage (CFE%)": 18.46,
+   "Renewable energy percentage (RE%)": 14.33,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-02-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 637.72,
+      "kWh (Life cycle)": 696.27
+   },
+   "Carbon-free energy percentage (CFE%)": 17.02,
+   "Renewable energy percentage (RE%)": 12.8,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-03-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 659.04,
+      "kWh (Life cycle)": 716.23
+   },
+   "Carbon-free energy percentage (CFE%)": 14.6,
+   "Renewable energy percentage (RE%)": 10.52,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-04-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 653.99,
+      "kWh (Life cycle)": 710.64
+   },
+   "Carbon-free energy percentage (CFE%)": 15.37,
+   "Renewable energy percentage (RE%)": 11.26,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-05-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 669.61,
+      "kWh (Life cycle)": 725.37
+   },
+   "Carbon-free energy percentage (CFE%)": 13.96,
+   "Renewable energy percentage (RE%)": 9.94,
+   "Data source": "eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-06-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 669.08,
+      "kWh (Life cycle)": 726.79
+   },
+   "Carbon-free energy percentage (CFE%)": 13.56,
+   "Renewable energy percentage (RE%)": 10.03,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-07-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 672.65,
+      "kWh (Life cycle)": 728.35
+   },
+   "Carbon-free energy percentage (CFE%)": 13.45,
+   "Renewable energy percentage (RE%)": 9.85,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-08-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 660.03,
+      "kWh (Life cycle)": 715.08
+   },
+   "Carbon-free energy percentage (CFE%)": 15.3,
+   "Renewable energy percentage (RE%)": 11.49,
+   "Data source": "eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-09-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 666.58,
+      "kWh (Life cycle)": 726.12
+   },
+   "Carbon-free energy percentage (CFE%)": 13.16,
+   "Renewable energy percentage (RE%)": 11.14,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-10-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 650.87,
+      "kWh (Life cycle)": 706.41
+   },
+   "Carbon-free energy percentage (CFE%)": 16,
+   "Renewable energy percentage (RE%)": 12.14,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-11-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 653.5,
+      "kWh (Life cycle)": 709.81
+   },
+   "Carbon-free energy percentage (CFE%)": 15.19,
+   "Renewable energy percentage (RE%)": 11.36,
+   "Data source": "eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-12-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 642.06,
+      "kWh (Life cycle)": 700.69
+   },
+   "Carbon-free energy percentage (CFE%)": 16.22,
+   "Renewable energy percentage (RE%)": 12.21,
+   "Data source": "Electricity Maps Estimation; eskom.co.za",
+   "FIELD10": "",
+   "FIELD11": ""
+}
+]

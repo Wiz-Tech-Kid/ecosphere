@@ -1,0 +1,182 @@
+[
+ {
+   "Datetime (UTC)": "2024-01-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 752.21,
+      "kWh (Life cycle)": 815.31
+   },
+   "Carbon-free energy percentage (CFE%)": 0.23,
+   "Renewable energy percentage (RE%)": 0.23,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-02-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 754.58,
+      "kWh (Life cycle)": 817.39
+   },
+   "Carbon-free energy percentage (CFE%)": 0,
+   "Renewable energy percentage (RE%)": 0,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-03-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 750.66,
+      "kWh (Life cycle)": 814.91
+   },
+   "Carbon-free energy percentage (CFE%)": 0.15,
+   "Renewable energy percentage (RE%)": 0.15,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-04-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 748.31,
+      "kWh (Life cycle)": 813.74
+   },
+   "Carbon-free energy percentage (CFE%)": 0.16,
+   "Renewable energy percentage (RE%)": 0.16,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-05-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 718.05,
+      "kWh (Life cycle)": 798.49
+   },
+   "Carbon-free energy percentage (CFE%)": 0.33,
+   "Renewable energy percentage (RE%)": 0.33,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-06-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 683.52,
+      "kWh (Life cycle)": 781.59
+   },
+   "Carbon-free energy percentage (CFE%)": 0.41,
+   "Renewable energy percentage (RE%)": 0.41,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-07-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 683.52,
+      "kWh (Life cycle)": 781.59
+   },
+   "Carbon-free energy percentage (CFE%)": 0.41,
+   "Renewable energy percentage (RE%)": 0.41,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-08-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 730.74,
+      "kWh (Life cycle)": 803.25
+   },
+   "Carbon-free energy percentage (CFE%)": 0.66,
+   "Renewable energy percentage (RE%)": 0.66,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-09-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 744.47,
+      "kWh (Life cycle)": 810.69
+   },
+   "Carbon-free energy percentage (CFE%)": 0.45,
+   "Renewable energy percentage (RE%)": 0.45,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-10-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 745.33,
+      "kWh (Life cycle)": 811.75
+   },
+   "Carbon-free energy percentage (CFE%)": 0.29,
+   "Renewable energy percentage (RE%)": 0.29,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-11-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 747.32,
+      "kWh (Life cycle)": 812.72
+   },
+   "Carbon-free energy percentage (CFE%)": 0.29,
+   "Renewable energy percentage (RE%)": 0.29,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+},
+ {
+   "Datetime (UTC)": "2024-12-01 00:00:00",
+   "Country": "Botswana",
+   "Zone name": "Botswana",
+   "Zone id": "BW",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 747.8,
+      "kWh (Life cycle)": 813.24
+   },
+   "Carbon-free energy percentage (CFE%)": 0.22,
+   "Renewable energy percentage (RE%)": 0.22,
+   "Data source": "Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+}
+]

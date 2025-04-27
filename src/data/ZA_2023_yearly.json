@@ -1,0 +1,17 @@
+[
+ {
+   "Datetime (UTC)": "2023-01-01 00:00:00",
+   "Country": "South Africa",
+   "Zone name": "South Africa",
+   "Zone id": "ZA",
+   "Carbon intensity gCO₂eq": {
+      "kWh (direct)": 644.47,
+      "kWh (Life cycle)": 701.88
+   },
+   "Carbon-free energy percentage (CFE%)": 16.6,
+   "Renewable energy percentage (RE%)": 12.63,
+   "Data source": "eskom.co.za; Electricity Maps Estimation",
+   "FIELD10": "",
+   "FIELD11": ""
+}
+]
