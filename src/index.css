@@ -24,8 +24,8 @@ html, body, #root {
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #213448; /* Dark blue background */
-  color: #e5e7eb; /* Light gray text */
+  background-color: #213448;
+  color: #e5e7eb;
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -33,17 +33,17 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #f3f4f6; /* Slightly brighter gray for headings */
+  color: #f3f4f6;
 }
 
 a {
   font-weight: 500;
-  color: #60a5fa; /* Bright blue for links */
+  color: #60a5fa;
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
-  color: #3b82f6; /* Slightly darker blue on hover */
+  color: #3b82f6;
 }
 
 button {
@@ -53,31 +53,38 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #374151; /* Dark gray for buttons */
-  color: #f9fafb; /* Light text for buttons */
+  background-color: #374151;
+  color: #f9fafb;
   cursor: pointer;
   transition: border-color 0.25s, background-color 0.25s;
 }
 button:hover {
-  border-color: #60a5fa; /* Bright blue border on hover */
-  background-color: #475569; /* Slightly lighter gray on hover */
+  border-color: #60a5fa;
+  background-color: #475569;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto #60a5fa; /* Bright blue outline */
+  outline: 4px auto #60a5fa;
 }
 
 .pro-sidebar {
-  background-color: #1f2937; /* Dark gray background */
-  color: #e5e7eb; /* Light gray text */
+  background-color: #1f2937;
+  color: #e5e7eb;
 }
 
 .pro-sidebar .pro-menu-item {
   font-size: 16px;
-  color: #cbd5e1; /* Lighter gray for menu items */
+  color: #cbd5e1;
 }
 
 .pro-sidebar .pro-menu-item:hover {
-  background-color: #374151; /* Lighter gray on hover */
-  color: #f9fafb; /* Bright white text on hover */
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.animated-background {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
 }

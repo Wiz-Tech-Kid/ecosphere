@@ -111,7 +111,7 @@ const Calculator: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Scope 1 */}
-          <div className="bg-gray-800 dark:bg-gray-800 shadow-md rounded-lg p-4">
+          <div className="bg-gray-800 shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 1 (Direct)</h2>
             <input
               type="number"
@@ -130,7 +130,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* Scope 2 */}
-          <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 2 (Indirect Energy)</h2>
             <input
               type="number"
@@ -154,7 +154,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* Scope 3 */}
-          <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 3 (Value Chain)</h2>
             <input
               type="number"
@@ -195,12 +195,12 @@ const Calculator: React.FC = () => {
         </button>
 
         {results && (
-          <div className="mt-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+          <div className="mt-6 bg-white shadow-md rounded-lg p-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Results</h2>
               <button
                 onClick={exportToPDF}
-                className="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                className="flex items-center px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 Export Report
@@ -210,13 +210,13 @@ const Calculator: React.FC = () => {
               Total Emissions: {results.total.toFixed(2)} kg CO₂e
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">
+              <div className="p-4 bg-gray-100 rounded">
                 Scope 1: {results.scope1.toFixed(2)} kg
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">
+              <div className="p-4 bg-gray-100 rounded">
                 Scope 2: {results.scope2.toFixed(2)} kg
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">
+              <div className="p-4 bg-gray-100 rounded">
                 Scope 3: {results.scope3.toFixed(2)} kg
               </div>
             </div>
@@ -258,7 +258,7 @@ const Calculator: React.FC = () => {
           </div>
         )}
 
-        <div className="mt-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+        <div className="mt-6 bg-white shadow-md rounded-lg p-4">
           <h2 className="text-lg font-semibold mb-4">Emission Trends</h2>
           <AreaChart
             width={500}

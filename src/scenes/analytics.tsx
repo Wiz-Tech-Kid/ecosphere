@@ -112,7 +112,7 @@ export default function Analytics() {
       </div>
 
       {/* Bar Chart - Carbon Intensity */}
-      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+      <section className="bg-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6">Carbon Intensity by Month</h2>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
@@ -130,7 +130,7 @@ export default function Analytics() {
       </section>
 
       {/* 2) Bar Chart */}
-      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+      <section className="bg-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Avg Carbon Intensity by Country</h2>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={barData}>
@@ -148,7 +148,7 @@ export default function Analytics() {
       </section>
 
       {/* 3) Pie Chart */}
-      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+      <section className="bg-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Energy Mix Composition</h2>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
@@ -172,7 +172,7 @@ export default function Analytics() {
       </section>
 
       {/* 4) Area Chart */}
-      <section className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+      <section className="bg-white p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Carbon-Free Energy % Over Time</h2>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={areaData}>
