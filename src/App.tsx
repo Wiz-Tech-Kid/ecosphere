@@ -1,16 +1,18 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import supabase from "./utils/supabaseClient";
 import { Session } from "@supabase/supabase-js";
-import Dashboard from "./scenes/dashboard/dashboard";
-import Analytics from "./scenes/analytics";
-import Calculator from "./scenes/calculator";
 import Topbar from "./scenes/global/topbar";
 import Sidebar from "./scenes/global/sidebar";
-import EmissionTracker from "./scenes/emission_tracker";
 import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
 import PasswordReset from "./pages/PasswordReset";
+
+const Dashboard = lazy(() => import("./scenes/dashboard/dashboard"));
+const Analytics = lazy(() => import("./scenes/analytics"));
+const Calculator = lazy(() => import("./scenes/calculator"));
+const EmissionTracker = lazy(() => import("./scenes/emission_tracker"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -48,7 +50,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.VITE_BASE_PATH || "/"}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -62,12 +64,15 @@ function App() {
                 <div className="flex-1 flex flex-col overflow-hidden">
                   <Topbar />
                   <main className="flex-1 flex flex-col overflow-auto">
-                    <Routes>
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/analytics" element={<Analytics />} />
-                      <Route path="/calculator" element={<Calculator />} />
-                      <Route path="/emission_tracker" element={<EmissionTracker />} />
-                    </Routes>
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <Routes>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/analytics" element={<Analytics />} />
+                        <Route path="/calculator" element={<Calculator />} />
+                        <Route path="/emission_tracker" element={<EmissionTracker />} />
+                        <Route path="/settings" element={<Settings />} />
+                      </Routes>
+                    </Suspense>
                   </main>
                 </div>
               </div>

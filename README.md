@@ -1,188 +1,142 @@
-# Ecosphere: Carbon Footprint Calculator and Sustainability Dashboard
+# Ecosphere App
+
+Ecosphere is a React-based web application designed to provide users with tools for environmental tracking, analytics, and calculations. It includes features such as user authentication, a dashboard, analytics, a calculator, an emission tracker, and settings management. Below is a detailed technical documentation of the app.
+
+---
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Screens and Features](#screens-and-features)
+   - [Landing Page](#landing-page)
+   - [Login](#login)
+   - [Password Reset](#password-reset)
+   - [Dashboard](#dashboard)
+   - [Analytics](#analytics)
+   - [Calculator](#calculator)
+   - [Emission Tracker](#emission-tracker)
+   - [Settings](#settings)
+3. [Protected Routes](#protected-routes)
+4. [File Structure](#file-structure)
+5. [Technologies Used](#technologies-used)
+
+---
 
 ## Overview
-Ecosphere is a React-based web application designed to help users monitor, analyze, and manage their carbon emissions. It integrates real-time data tracking, predictive analytics, and machine learning to provide actionable insights for sustainability.
+
+The Ecosphere app is built using React and leverages Supabase for user authentication and session management. It uses `react-router-dom` for routing and `React.lazy` for code-splitting and lazy loading of components. The app is styled with a combination of custom CSS and utility classes.
 
 ---
 
-## Features
-### 1. **Dashboard**
-- Provides an overview of emissions data, including KPIs, trends, and recent activities.
-- Visualizations include doughnut charts and bar charts for energy comparisons.
+## Screens and Features
 
-### 2. **Emission Tracker**
-- Tracks real-time and historical emissions data.
-- Supports regional comparisons and energy mix breakdowns.
-- Uses `@nivo` and `recharts` for visualizations.
+### Landing Page
+- **Path**: `/`
+- **Description**: The landing page serves as the entry point for the application. It provides an overview of the app's purpose and features.
+- **Implementation**: A simple React component rendered at the root path.
 
-### 3. **Calculator**
-- Allows users to calculate emissions across Scope 1, Scope 2, and Scope 3 categories.
-- Provides detailed breakdowns and supports exporting reports.
+### Login
+- **Path**: `/login`
+- **Description**: Allows users to log in to their accounts using credentials managed by Supabase.
+- **Implementation**: Uses Supabase's `auth` API to handle user authentication.
 
-### 4. **Analytics**
-- Offers advanced visualizations like Sankey diagrams and sensitivity analysis.
-- Includes carbon intensity and renewable energy mix comparisons.
+### Password Reset
+- **Path**: `/reset-password`
+- **Description**: Provides functionality for users to reset their passwords.
+- **Implementation**: Integrates with Supabase's password reset functionality.
 
-### 5. **Authentication**
-- Uses Supabase for user authentication.
-- Protects routes to ensure only logged-in users can access the app.
+### Dashboard
+- **Path**: `/dashboard`
+- **Description**: Displays an overview of the user's data and key metrics.
+- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+
+### Analytics
+- **Path**: `/analytics`
+- **Description**: Provides detailed analytics and insights based on user data.
+- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+
+### Calculator
+- **Path**: `/calculator`
+- **Description**: Offers tools for performing environmental calculations, such as carbon footprint estimations.
+- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+
+### Emission Tracker
+- **Path**: `/emission_tracker`
+- **Description**: Tracks and logs the user's emissions over time.
+- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+
+### Settings
+- **Path**: `/settings`
+- **Description**: Allows users to manage their account settings and preferences.
+- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
 
 ---
 
-## Installation
-### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
-- Supabase account for authentication
+## Protected Routes
 
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/ecosphere.git
-   cd ecosphere
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables:
-   - Create a `.env` file in the root directory.
-   - Add the following variables:
-     ```properties
-     VITE_SUPABASE_URL=your-supabase-url
-     VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-     REACT_APP_LLM_API_URL=https://api.example.com/llm
-     REACT_APP_LLM_API_KEY=your-llm-api-key
-     ```
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-5. Build for production:
-   ```bash
-   npm run build
-   ```
+The app uses a `ProtectedRoute` component to ensure that certain routes are only accessible to authenticated users. This component:
+1. Fetches the current session using Supabase's `auth.getSession` method.
+2. Listens for authentication state changes using `auth.onAuthStateChange`.
+3. Displays a loading indicator while the session is being verified.
+4. Redirects unauthenticated users to the `/login` page.
 
 ---
 
 ## File Structure
+
 ```
-ecosphere/
-├── public/                 # Static assets
-├── src/
-│   ├── components/         # Reusable UI components
-│   ├── data/               # Emissions datasets
-│   ├── hooks/              # Custom React hooks
-│   ├── scenes/             # App pages and features
-│   │   ├── dashboard/      # Dashboard page
-│   │   ├── analytics/      # Analytics page
-│   │   ├── calculator/     # Calculator page
-│   │   ├── emission_tracker/ # Emission Tracker page
-│   │   ├── global/         # Global components (e.g., Sidebar, Topbar)
-│   ├── stores/             # State management using Zustand
-│   ├── utils/              # Utility functions (e.g., Supabase client, ML analytics)
-│   ├── index.css           # Global styles
-│   ├── main.tsx            # App entry point
-│   ├── App.tsx             # Main app component
-├── .env                    # Environment variables
-├── package.json            # Project dependencies and scripts
-├── vite.config.ts          # Vite configuration
-├── tailwind.config.js      # Tailwind CSS configuration
-└── README.md               # Project documentation
+src/
+├── App.tsx                # Main application file
+├── pages/                 # Contains page components (e.g., Login, LandingPage, PasswordReset)
+├── scenes/                # Contains feature-specific components (e.g., Dashboard, Analytics)
+│   ├── global/            # Shared components like Sidebar and Topbar
+│   ├── dashboard/         # Dashboard-specific components
+│   ├── analytics/         # Analytics-specific components
+│   ├── calculator/        # Calculator-specific components
+│   ├── emission_tracker/  # Emission Tracker-specific components
+│   └── settings/          # Settings-specific components
+├── utils/                 # Utility files (e.g., Supabase client)
+└── index.tsx              # Entry point for the React app
 ```
 
 ---
 
-## Key Technologies
-- **Frontend**: React, TypeScript, Tailwind CSS
-- **State Management**: Zustand
-- **Charts**: `chart.js`, `@nivo`, `recharts`
-- **Authentication**: Supabase
-- **Build Tool**: Vite
+## Technologies Used
+
+- **React**: Frontend framework for building user interfaces.
+- **React Router**: For client-side routing.
+- **Supabase**: Backend-as-a-service for authentication and database management.
+- **TypeScript**: For type-safe development.
+- **React.lazy**: For code-splitting and lazy loading.
+- **CSS**: For styling the application.
 
 ---
 
-## Development Tools
-### Recommended VS Code Extensions
-1. **ESLint**: Linting and code quality checks.
-2. **Prettier**: Code formatting.
-3. **Tailwind CSS IntelliSense**: Autocompletion and linting for Tailwind CSS.
-4. **React Developer Tools**: Debugging React components.
-5. **Supabase**: Manage Supabase projects directly from VS Code.
-6. **AutoDocstring**: Automatically generate documentation for functions and components.
+## How It Works
+
+1. **Routing**: The app uses `react-router-dom` to define routes for each screen. Protected routes are wrapped in the `ProtectedRoute` component.
+2. **Authentication**: Supabase handles user authentication and session management.
+3. **Lazy Loading**: Non-essential components are loaded dynamically using `React.lazy` to improve performance.
+4. **State Management**: Local state is managed using React's `useState` and `useEffect` hooks.
 
 ---
 
-## How to Generate Documentation Automatically
-### Recommended Extensions
-1. **AutoDocstring**:
-   - Automatically generates docstrings for functions and components.
-   - Install from the VS Code marketplace.
+## Getting Started
 
-2. **Docz**:
-   - A documentation generator for React components.
-   - Install and configure:
-     ```bash
-     npm install docz
-     ```
-
-3. **TypeDoc**:
-   - Generates documentation from TypeScript code.
-   - Install and run:
-     ```bash
-     npm install typedoc
-     npx typedoc --out docs src
-     ```
-
-4. **JSDoc**:
-   - Add inline comments to your code, and generate documentation:
-     ```bash
-     npm install jsdoc
-     npx jsdoc -c jsdoc.json
-     ```
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Set up environment variables for Supabase (e.g., `VITE_BASE_PATH`).
+4. Run the app using `npm start`.
 
 ---
 
-## Deployment
-### Hosting on Vercel
-1. Install the Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
+## Future Enhancements
 
-2. Deploy the app:
-   ```bash
-   vercel
-   ```
-
-3. Add environment variables in the Vercel dashboard.
-
----
-
-## Contributing
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-
-3. Commit your changes:
-   ```bash
-   git commit -m "Add feature-name"
-   ```
-
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-
-5. Open a pull request.
+- Add more detailed analytics and reporting features.
+- Improve the UI/UX for better user engagement.
+- Integrate additional third-party APIs for environmental data.
 
 ---
 
 ## License
-This project is licensed under the MIT License.
+
+This project is licensed under the MIT License. See the LICENSE file for details.
