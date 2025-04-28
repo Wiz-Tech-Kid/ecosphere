@@ -1,83 +1,135 @@
 # Ecosphere App
 
-Ecosphere is a React-based web application designed to provide users with tools for environmental tracking, analytics, and calculations. It includes features such as user authentication, a dashboard, analytics, a calculator, an emission tracker, and settings management. Below is a detailed technical documentation of the app.
+Ecosphere is a React-based web application designed to provide tools for environmental tracking, analytics, and carbon footprint calculations. It integrates real-time data visualization, machine learning analytics, and user-friendly interfaces to help users monitor and reduce their carbon emissions.
 
 ---
 
 ## Table of Contents
+
 1. [Overview](#overview)
-2. [Screens and Features](#screens-and-features)
-   - [Landing Page](#landing-page)
-   - [Login](#login)
-   - [Password Reset](#password-reset)
+2. [Features](#features)
    - [Dashboard](#dashboard)
    - [Analytics](#analytics)
    - [Calculator](#calculator)
    - [Emission Tracker](#emission-tracker)
    - [Settings](#settings)
-3. [Protected Routes](#protected-routes)
-4. [File Structure](#file-structure)
-5. [Technologies Used](#technologies-used)
+3. [Technical Implementation](#technical-implementation)
+   - [Formulas Used](#formulas-used)
+   - [Machine Learning](#machine-learning)
+4. [Tutorials](#tutorials)
+   - [Using the Calculator](#using-the-calculator)
+   - [Tracking Emissions](#tracking-emissions)
+   - [Analyzing Data](#analyzing-data)
+5. [File Structure](#file-structure)
+6. [Technologies Used](#technologies-used)
+7. [Future Enhancements](#future-enhancements)
 
 ---
 
 ## Overview
 
-The Ecosphere app is built using React and leverages Supabase for user authentication and session management. It uses `react-router-dom` for routing and `React.lazy` for code-splitting and lazy loading of components. The app is styled with a combination of custom CSS and utility classes.
+Ecosphere is a platform for individuals and organizations to:
+- Monitor carbon emissions in real-time.
+- Analyze historical and regional emissions data.
+- Calculate carbon footprints using customizable inputs.
+- Visualize energy mixes and renewable energy contributions.
+
+The app is built with React, leveraging Supabase for authentication and TensorFlow.js for machine learning analytics.
 
 ---
 
-## Screens and Features
-
-### Landing Page
-- **Path**: `/`
-- **Description**: The landing page serves as the entry point for the application. It provides an overview of the app's purpose and features.
-- **Implementation**: A simple React component rendered at the root path.
-
-### Login
-- **Path**: `/login`
-- **Description**: Allows users to log in to their accounts using credentials managed by Supabase.
-- **Implementation**: Uses Supabase's `auth` API to handle user authentication.
-
-### Password Reset
-- **Path**: `/reset-password`
-- **Description**: Provides functionality for users to reset their passwords.
-- **Implementation**: Integrates with Supabase's password reset functionality.
+## Features
 
 ### Dashboard
-- **Path**: `/dashboard`
-- **Description**: Displays an overview of the user's data and key metrics.
-- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+- **Purpose**: Provides an overview of recent activities and key metrics.
+- **Key Components**:
+  - **Doughnut Chart**: Displays emissions breakdown.
+  - **Bar Chart**: Shows monthly emissions trends.
+  - **Recent Scenarios**: Lists recently calculated scenarios.
+- **Data Source**: Uses `ZA_2023_yearly.json` for emissions data.
 
 ### Analytics
-- **Path**: `/analytics`
-- **Description**: Provides detailed analytics and insights based on user data.
-- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+- **Purpose**: Offers detailed insights into carbon intensity, energy mix, and renewable energy contributions.
+- **Key Visualizations**:
+  - **Bar Chart**: Compares average carbon intensity between regions.
+  - **Pie Chart**: Displays renewable vs. non-renewable energy mix.
+  - **Area Chart**: Tracks carbon-free energy percentages over time.
+- **Data Source**: Combines `BW_2023_monthly.json` and `ZA_2023_monthly.json`.
 
 ### Calculator
-- **Path**: `/calculator`
-- **Description**: Offers tools for performing environmental calculations, such as carbon footprint estimations.
-- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+- **Purpose**: Calculates carbon emissions based on user inputs.
+- **Scopes**:
+  - **Scope 1**: Direct emissions (e.g., diesel combustion).
+  - **Scope 2**: Indirect emissions from electricity usage.
+  - **Scope 3**: Value chain emissions (e.g., commuting, waste).
+- **Formulas**:
+  - Diesel Emissions = `dieselLitres × 2.70 kgCO₂e/litre`
+  - Electricity Emissions = `electricityKwh × region-specific factor`
+  - Waste Emissions = `wasteKg × 0.1 kgCO₂e/kg`
+- **Export**: Generates PDF reports for audit compliance.
 
 ### Emission Tracker
-- **Path**: `/emission_tracker`
-- **Description**: Tracks and logs the user's emissions over time.
-- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+- **Purpose**: Simulates real-time emissions and analyzes historical data.
+- **Key Features**:
+  - **Real-Time Line Chart**: Updates emissions data every minute.
+  - **Regional Comparison**: Compares emissions across regions.
+  - **Energy Mix Breakdown**: Visualizes renewable vs. non-renewable energy.
+- **Data Source**: Processes `B_E_D.json` for regional emissions.
 
 ### Settings
-- **Path**: `/settings`
-- **Description**: Allows users to manage their account settings and preferences.
-- **Implementation**: Dynamically loaded using `React.lazy` and rendered within a protected route.
+- **Purpose**: Allows users to manage account settings and preferences.
+- **Key Features**:
+  - Update profile information.
+  - Manage notification preferences.
 
 ---
 
-## Protected Routes
+## Technical Implementation
 
-The app uses a `ProtectedRoute` component to ensure that certain routes are only accessible to authenticated users. This component:
-1. Fetches the current session using Supabase's `auth.getSession` method.
-2. Listens for authentication state changes using `auth.onAuthStateChange`.
-3. Displays a loading indicator while the session is being verified.
-4. Redirects unauthenticated users to the `/login` page.
+### Formulas Used
+1. **Diesel Combustion**:  
+   `Emissions = dieselLitres × 2.70 kgCO₂e/litre`
+2. **Electricity Usage**:  
+   `Emissions = electricityKwh × region-specific factor`
+3. **Business Travel**:  
+   `Emissions = travelKm × 0.18 kgCO₂e/km`
+4. **Waste Management**:  
+   `Emissions = wasteKg × 0.1 kgCO₂e/kg`
+
+### Machine Learning
+- **Linear Regression**: Predicts future emissions based on historical data.
+- **K-Means Clustering**: Groups regions based on emissions intensity.
+- **Heatmap Generation**: Maps emissions data to geographical regions.
+
+---
+
+## Tutorials
+
+### Using the Calculator
+1. Navigate to the **Calculator** page.
+2. Enter values for:
+   - Diesel consumption (litres).
+   - Electricity usage (kWh).
+   - Business travel (km).
+   - Waste generated (kg).
+3. Select the region for electricity emissions.
+4. Click **Calculate Emissions** to view results.
+5. Export the results as a PDF report.
+
+### Tracking Emissions
+1. Go to the **Emission Tracker** page.
+2. Select the interval type (minutes, hours, days).
+3. View real-time emissions on the line chart.
+4. Analyze historical data and regional comparisons.
+
+### Analyzing Data
+1. Open the **Analytics** page.
+2. Select the year (2023 or 2024).
+3. Adjust the sensitivity factor using the slider.
+4. Explore visualizations:
+   - Bar chart for carbon intensity.
+   - Pie chart for energy mix.
+   - Area chart for carbon-free energy.
 
 ---
 
@@ -86,15 +138,21 @@ The app uses a `ProtectedRoute` component to ensure that certain routes are only
 ```
 src/
 ├── App.tsx                # Main application file
-├── pages/                 # Contains page components (e.g., Login, LandingPage, PasswordReset)
-├── scenes/                # Contains feature-specific components (e.g., Dashboard, Analytics)
-│   ├── global/            # Shared components like Sidebar and Topbar
-│   ├── dashboard/         # Dashboard-specific components
-│   ├── analytics/         # Analytics-specific components
-│   ├── calculator/        # Calculator-specific components
-│   ├── emission_tracker/  # Emission Tracker-specific components
-│   └── settings/          # Settings-specific components
-├── utils/                 # Utility files (e.g., Supabase client)
+├── components/            # Reusable UI components
+│   ├── ui/                # Background animations and loaders
+│   ├── header.tsx         # Page headers
+│   ├── HeatMap.tsx        # Heatmap visualization
+│   ├── LoadingScreen.tsx  # Loading indicator
+│   ├── LoginForm.tsx      # Login form
+├── data/                  # JSON datasets for emissions and energy
+├── scenes/                # Feature-specific pages
+│   ├── dashboard/         # Dashboard components
+│   ├── analytics.tsx      # Analytics page
+│   ├── calculator.tsx     # Calculator page
+│   ├── emission_tracker.tsx # Emission Tracker page
+│   ├── global/            # Shared components (Sidebar, Topbar)
+├── stores/                # Zustand state management
+├── utils/                 # Utility functions (Supabase, ML)
 └── index.tsx              # Entry point for the React app
 ```
 
@@ -103,37 +161,20 @@ src/
 ## Technologies Used
 
 - **React**: Frontend framework for building user interfaces.
-- **React Router**: For client-side routing.
 - **Supabase**: Backend-as-a-service for authentication and database management.
-- **TypeScript**: For type-safe development.
-- **React.lazy**: For code-splitting and lazy loading.
-- **CSS**: For styling the application.
-
----
-
-## How It Works
-
-1. **Routing**: The app uses `react-router-dom` to define routes for each screen. Protected routes are wrapped in the `ProtectedRoute` component.
-2. **Authentication**: Supabase handles user authentication and session management.
-3. **Lazy Loading**: Non-essential components are loaded dynamically using `React.lazy` to improve performance.
-4. **State Management**: Local state is managed using React's `useState` and `useEffect` hooks.
-
----
-
-## Getting Started
-
-1. Clone the repository.
-2. Install dependencies using `npm install`.
-3. Set up environment variables for Supabase (e.g., `VITE_BASE_PATH`).
-4. Run the app using `npm start`.
+- **TensorFlow.js**: Machine learning library for analytics.
+- **Recharts**: Data visualization library.
+- **TypeScript**: Type-safe development.
+- **Zustand**: State management.
 
 ---
 
 ## Future Enhancements
 
-- Add more detailed analytics and reporting features.
-- Improve the UI/UX for better user engagement.
-- Integrate additional third-party APIs for environmental data.
+1. **Advanced Analytics**: Add predictive models for emissions trends.
+2. **User Customization**: Allow users to upload custom datasets.
+3. **Mobile Support**: Optimize the app for mobile devices.
+4. **API Integration**: Fetch real-time emissions data from external sources.
 
 ---
 
