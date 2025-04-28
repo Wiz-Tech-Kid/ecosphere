@@ -9,14 +9,18 @@ import Topbar from "./scenes/global/topbar";
 import Sidebar from "./scenes/global/sidebar";
 import EmissionTracker from "./scenes/emission_tracker";
 import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
+import PasswordReset from "./pages/PasswordReset";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchSession = async () => {
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
+      setIsLoading(false); // Set loading to false after fetching session
     };
 
     fetchSession();
@@ -30,6 +34,11 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     };
   }, []);
 
+  if (isLoading) {
+    // Show a loading indicator while checking the session
+    return <div className="flex items-center justify-center h-screen text-white">Loading...</div>;
+  }
+
   if (!session) {
     return <Navigate to="/login" />;
   }
@@ -41,7 +50,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<PasswordReset />} />
         <Route
           path="/*"
           element={
