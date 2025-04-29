@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   Activity,
   LogOut,
+  Users, // Import icon for Collaborators Hub
 } from "lucide-react";
 import supabase from "../../utils/supabaseClient";
 
@@ -107,6 +108,19 @@ const Sidebar: React.FC = () => {
           >
             <Activity className="w-6 h-6 mr-3" />
             {!isCollapsed && <span>Emission Tracker</span>}
+          </Link>
+
+          <Link
+            to="/collaborators_hub"
+            onClick={() => setSelected("CollaboratorsHub")}
+            className={`flex items-center p-3 rounded-lg transition-colors ${
+              selected === "CollaboratorsHub"
+                ? "bg-[#374151] text-[#f9fafb]"
+                : "hover:bg-[#374151] text-[#cbd5e1]"
+            }`}
+          >
+            <Users className="w-6 h-6 mr-3" />
+            {!isCollapsed && <span>Collaborators Hub</span>}
           </Link>
         </nav>
 

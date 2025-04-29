@@ -4,7 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // Ensure the base path is correct
+  base: process.env.VITE_BASE_PATH ||"/ecosphere", // Ensure the base path is correct
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"), // Simplify imports with '@'

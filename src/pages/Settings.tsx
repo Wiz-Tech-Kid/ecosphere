@@ -1,113 +1,127 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
+import { FiMail, FiDownload, FiTrash2, FiGlobe, FiShield } from "react-icons/fi";
 
 const Settings: React.FC = () => {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [notifications, setNotifications] = useState({
-    email: true,
-    sms: false,
-  });
+  // Notifications
+  const [notifications, setNotifications] = useState({ email: true, sms: false });
+  const [savingNotifications, setSavingNotifications] = useState(false);
 
-  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTheme(e.target.value as "light" | "dark");
-    document.documentElement.classList.toggle("dark", e.target.value === "dark");
-  };
+  // Language
+  const [language, setLanguage] = useState("en");
 
-  const handleNotificationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Privacy Settings
+  const [dataSharing, setDataSharing] = useState(false);
+
+  // Handlers
+  const handleNotificationChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setNotifications((prev) => ({ ...prev, [name]: checked }));
+    setSavingNotifications(true);
+    // simulate save
+    await new Promise((r) => setTimeout(r, 500));
+    setSavingNotifications(false);
   };
 
   const handleExportData = () => {
-    alert("Data export initiated!");
+    alert("Data export initiated");
   };
 
   const handleDeleteAccount = () => {
-    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
       alert("Account deletion initiated.");
     }
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Settings</h1>
+    <div className="p-6 space-y-6 max-w-3xl mx-auto bg-[#021526] text-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-6 text-[#e1f5fe]">Settings</h1>
 
-      {/* Profile Settings */}
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Profile Settings</h2>
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Name"
-            className="w-full p-2 border rounded"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-2 border rounded"
-          />
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Save Changes
-          </button>
-        </div>
-      </section>
-
-      {/* Theme Settings */}
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Theme Settings</h2>
+      {/* Language Settings */}
+      <section className="bg-[#03346E] p-6 rounded-lg shadow-md space-y-4">
+        <h2 className="text-xl font-semibold flex items-center space-x-2 text-[#e1f5fe]">
+          <FiGlobe className="text-[#81d4fa]" />
+          <span>Language</span>
+        </h2>
         <select
-          value={theme}
-          onChange={handleThemeChange}
-          className="w-full p-2 border rounded"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          className="w-full p-3 bg-[#021526] border border-[#1B262C] rounded-lg text-[#e1f5fe]"
         >
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="es">Spanish</option>
+          <option value="de">German</option>
         </select>
       </section>
 
       {/* Notification Preferences */}
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Notification Preferences</h2>
-        <div className="space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              name="email"
-              checked={notifications.email}
-              onChange={handleNotificationChange}
-            />
-            <span>Email Notifications</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              name="sms"
-              checked={notifications.sms}
-              onChange={handleNotificationChange}
-            />
-            <span>SMS Notifications</span>
-          </label>
-        </div>
+      <section className="bg-[#03346E] p-6 rounded-lg shadow-md space-y-4">
+        <h2 className="text-xl font-semibold text-[#e1f5fe]">Notifications</h2>
+        <label className="flex items-center justify-between text-[#81d4fa]">
+          <span>Email Notifications</span>
+          <input
+            type="checkbox"
+            name="email"
+            checked={notifications.email}
+            onChange={handleNotificationChange}
+            className="toggle-input"
+          />
+        </label>
+        <label className="flex items-center justify-between text-[#81d4fa]">
+          <span>SMS Notifications</span>
+          <input
+            type="checkbox"
+            name="sms"
+            checked={notifications.sms}
+            onChange={handleNotificationChange}
+            className="toggle-input"
+          />
+        </label>
+        {savingNotifications && <p className="text-sm text-[#81d4fa]">Saving...</p>}
+      </section>
+
+      {/* Privacy Settings */}
+      <section className="bg-[#03346E] p-6 rounded-lg shadow-md space-y-4">
+        <h2 className="text-xl font-semibold flex items-center space-x-2 text-[#e1f5fe]">
+          <FiShield className="text-[#81d4fa]" />
+          <span>Privacy Settings</span>
+        </h2>
+        <label className="flex items-center justify-between text-[#81d4fa]">
+          <span>Enable Data Sharing</span>
+          <input
+            type="checkbox"
+            checked={dataSharing}
+            onChange={(e) => setDataSharing(e.target.checked)}
+            className="toggle-input"
+          />
+        </label>
       </section>
 
       {/* Data Export */}
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Data Export</h2>
+      <section className="bg-[#03346E] p-6 rounded-lg shadow-md flex justify-between items-center">
+        <h2 className="text-xl font-semibold text-[#e1f5fe]">Data Export</h2>
         <button
           onClick={handleExportData}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
         >
-          Export Data
+          <FiDownload />
+          <span>Export Data</span>
         </button>
       </section>
 
       {/* Account Management */}
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Account Management</h2>
+      <section className="bg-[#03346E] p-6 rounded-lg shadow-md flex justify-between items-center">
+        <h2 className="text-xl font-semibold text-[#e1f5fe]">Account Management</h2>
         <button
           onClick={handleDeleteAccount}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
-          Delete Account
+          <FiTrash2 />
+          <span>Delete Account</span>
         </button>
       </section>
     </div>

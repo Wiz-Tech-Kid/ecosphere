@@ -71,7 +71,7 @@ export default function Analytics() {
   ];
   const PIE_COLORS = ["#0088FE","#00C49F","#FFBB28","#FF8042"];
 
-  // 4) Area chart — carbon‐free energy %
+  // 4) Area chart — carbon‐free energy % 
   const areaData = dataSets.za.map((zaEntry, i) => {
     const month = new Date(zaEntry["Datetime (UTC)"]).toLocaleString("en-US", { month: "short" });
     return {
@@ -82,15 +82,15 @@ export default function Analytics() {
   });
 
   return (
-    <div className="flex flex-col flex-1 p-6 space-y-12">
+    <div className="flex flex-col flex-1 p-6 space-y-12 bg-[#021526] text-white">
       <Header title="Analytics" subtitle="Analyze your energy & carbon data" />
 
       {/* Year / Sensitivity Controls */}
       <div className="flex justify-between items-center mb-4">
         <div>
-          <label className="mr-2">Year:</label>
+          <label className="mr-2 text-[#e1f5fe]">Year:</label>
           <select
-            className="p-2 border rounded"
+            className="p-2 border rounded bg-[#0B192C] text-[#e1f5fe] border-[#1B262C] focus:outline-none focus:ring-2 focus:ring-[#4fc3f7]"
             value={year}
             onChange={e => setYear(e.target.value as any)}
           >
@@ -99,7 +99,7 @@ export default function Analytics() {
           </select>
         </div>
         <div className="w-1/3">
-          <label className="block mb-1">Sensitivity Factor: {factor.toFixed(1)}</label>
+          <label className="block mb-1 text-[#e1f5fe]">Sensitivity Factor: {factor.toFixed(1)}</label>
           <Slider
             value={factor}
             min={0.5}
@@ -107,30 +107,39 @@ export default function Analytics() {
             step={0.1}
             onChange={(_, v) => setFactor(v as number)}
             valueLabelDisplay="auto"
+            sx={{
+              color: "#4fc3f7",
+              "& .MuiSlider-thumb": { backgroundColor: "#1B262C" },
+              "& .MuiSlider-track": { backgroundColor: "#4fc3f7" },
+              "& .MuiSlider-rail": { backgroundColor: "#152A38" },
+            }}
           />
         </div>
       </div>
 
       {/* Bar Chart - Carbon Intensity */}
-      <section className="bg-white p-6 rounded-xl shadow-lg">
+      <section className="bg-[#03346E] p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6">Carbon Intensity by Month</h2>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={heatmapData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <RechartsTooltip />
-              <RechartsLegend />
-              <Bar dataKey="Botswana" fill="#82ca9d" />
-              <Bar dataKey="South Africa" fill="#8884d8" />
+            <BarChart
+              data={heatmapData}
+              style={{ backgroundColor: "#021526" }} // Keep background as it is
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+              <XAxis dataKey="month" stroke="#FFEB3B" />
+              <YAxis stroke="#FFEB3B" />
+              <RechartsTooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+              <RechartsLegend wrapperStyle={{ color: "#FFFFFF" }} />
+              <Bar dataKey="Botswana" fill="#4CAF50" /> {/* Green for Botswana */}
+              <Bar dataKey="South Africa" fill="#F44336" /> {/* Red for South Africa */}
             </BarChart>
           </ResponsiveContainer>
         </div>
       </section>
 
       {/* 2) Bar Chart */}
-      <section className="bg-white p-6 rounded-xl shadow-lg">
+      <section className="bg-[#03346E] p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Avg Carbon Intensity by Country</h2>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={barData}>
@@ -148,10 +157,10 @@ export default function Analytics() {
       </section>
 
       {/* 3) Pie Chart */}
-      <section className="bg-white p-6 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Energy Mix Composition</h2>
+      <section className="bg-[#03346E] p-6 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-[#e1f5fe]">Energy Mix Composition</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
+          <PieChart style={{ backgroundColor: "#021526" }}> {/* Set chart background color */}
             <Pie
               data={pieData}
               dataKey="value"
@@ -159,30 +168,33 @@ export default function Analytics() {
               cx="50%"
               cy="50%"
               outerRadius={100}
-              label={({ name, percent }) => `${name}: ${(percent*100).toFixed(1)}%`}
+              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
             >
               {pieData.map((_, i) => (
                 <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
               ))}
             </Pie>
-            <RechartsTooltip formatter={v => (typeof v === "number" ? `${v.toFixed(1)}%` : v)} />
-            <RechartsLegend layout="vertical" verticalAlign="middle" align="right" />
+            <RechartsTooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+            <RechartsLegend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ backgroundColor: "#021526", color: "#e1f5fe" }} />
           </PieChart>
         </ResponsiveContainer>
       </section>
 
       {/* 4) Area Chart */}
-      <section className="bg-white p-6 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Carbon-Free Energy % Over Time</h2>
+      <section className="bg-[#03346E] p-6 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-[#e1f5fe]">Carbon-Free Energy % Over Time</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={areaData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis domain={[0, 100]} ticks={[0,20,40,60,80,100]} />
-            <RechartsTooltip formatter={v => (typeof v === "number" ? `${v.toFixed(1)}%` : v)} />
-            <RechartsLegend />
-            <Area type="monotone" dataKey="ZA CFE%" stroke="#8884D8" fill="#8884D8" fillOpacity={0.4}/>
-            <Area type="monotone" dataKey="BW CFE%" stroke="#82CA9D" fill="#82CA9D" fillOpacity={0.4}/>
+          <AreaChart
+            data={areaData}
+            style={{ backgroundColor: "#021526" }} // Keep background as it is
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+            <XAxis dataKey="month" stroke="#FFFFFF" />
+            <YAxis stroke="#FFFFFF" domain={[0, 100]} ticks={[0, 20, 40, 60, 80, 100]} />
+            <RechartsTooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+            <RechartsLegend wrapperStyle={{ backgroundColor: "#021526", color: "#e1f5fe" }} />
+            <Area type="monotone" dataKey="ZA CFE%" stroke="#FF5722" fill="#FF5722" fillOpacity={0.4} />
+            <Area type="monotone" dataKey="BW CFE%" stroke="#4CAF50" fill="#4CAF50" fillOpacity={0.4} />
           </AreaChart>
         </ResponsiveContainer>
       </section>

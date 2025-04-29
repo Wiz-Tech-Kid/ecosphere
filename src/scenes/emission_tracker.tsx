@@ -12,8 +12,9 @@ import {
   Bar,
   PieChart,
   Pie,
+  Cell,
 } from "recharts";
-import Header from "../components/header";
+import Header from "../components/header"; // Fixed import path
 import BED_DATA from "../data/B_E_D.json"; // Import BED dataset
 
 interface ChartData {
@@ -29,6 +30,21 @@ const EmissionTracker: React.FC = () => {
   const [energyMixData, setEnergyMixData] = useState<any[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [chartType, setChartType] = useState<"pie" | "line">("pie"); // Toggle for chart type
+
+  const saveTrackerEntry = (entry: { category: string; value: number; date: string }) => {
+    const existingEntries = JSON.parse(localStorage.getItem("trackerEntries") || "[]");
+    const updatedEntries = [entry, ...existingEntries].slice(0, 5); // Keep only the last 5 entries
+    localStorage.setItem("trackerEntries", JSON.stringify(updatedEntries));
+  };
+
+  // Example of saving a tracker entry
+  const trackEmission = (category: string, value: number) => {
+    saveTrackerEntry({
+      category,
+      value,
+      date: new Date().toLocaleString(),
+    });
+  };
 
   useEffect(() => {
     // Determine interval duration based on selected interval type
@@ -105,7 +121,7 @@ const EmissionTracker: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col flex-1 p-6 space-y-10">
+    <div className="flex flex-col flex-1 p-6 space-y-10 bg-[#021526] text-white">
       {/* Page Header */}
       <Header
         title="Emission Tracker"
@@ -117,7 +133,7 @@ const EmissionTracker: React.FC = () => {
         <select
           value={intervalType}
           onChange={(e) => setIntervalType(e.target.value as "minutes" | "hours" | "days")}
-          className="p-2 border rounded"
+          className="p-2 border rounded bg-[#0B192C] text-[#e1f5fe] border-[#1B262C] focus:outline-none focus:ring-2 focus:ring-[#4fc3f7]"
         >
           <option value="minutes">Minutes</option>
           <option value="hours">Hours</option>
@@ -126,12 +142,15 @@ const EmissionTracker: React.FC = () => {
       </div>
 
       {/* Real-Time Emissions Line Chart */}
-      <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+      <section className="bg-[#03346E] shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Real-Time Emissions</h2>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={realTimeData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <LineChart
+              data={realTimeData}
+              style={{ backgroundColor: "#021526" }} // Set chart background color
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
               <XAxis
                 dataKey="time"
                 tick={{ fontSize: 12 }}
@@ -141,6 +160,7 @@ const EmissionTracker: React.FC = () => {
                   offset: -5,
                   style: { textAnchor: "middle" },
                 }}
+                stroke="#FFFFFF"
               />
               <YAxis
                 domain={[0, 1000]} // Set Y-axis range to 0-1000
@@ -151,15 +171,17 @@ const EmissionTracker: React.FC = () => {
                   position: "insideLeft",
                   style: { textAnchor: "middle" },
                 }}
+                stroke="#FFFFFF"
               />
               <Tooltip
                 formatter={(value: any) => `${value.toFixed(2)} gCO₂`}
                 labelFormatter={(label) => `Time: ${label}`}
+                contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }}
               />
               <Line
                 type="monotone"
                 dataKey="emissions"
-                stroke="#8884d8"
+                stroke="#03346E"
                 strokeWidth={2}
                 dot={false} // Smooth line
                 name="Emissions"
@@ -218,23 +240,41 @@ const EmissionTracker: React.FC = () => {
         <h2 className="text-xl font-semibold mb-4">Regional Emissions Comparison</h2>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={regionData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="region" />
+            <BarChart
+              data={regionData}
+              style={{ backgroundColor: "#021526" }} // Set chart background color
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+              <XAxis dataKey="region" stroke="#FFFFFF" />
               <YAxis
                 domain={[18000, 21000]} // Adjusted domain to match the range of values
                 tickCount={7} // Set tick intervals to show more granularity
+                stroke="#FFFFFF"
               />
-              <Tooltip formatter={(value: any) => `${value.toFixed(2)} gCO₂`} />
-              <Bar dataKey="emissions" fill="#82ca9d" name="Emissions" />
+              <Tooltip
+                formatter={(value: any) => `${value.toFixed(2)} gCO₂`}
+                contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }}
+              />
+              <Bar dataKey="emissions" name="Emissions">
+                {regionData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      index % 2 === 0
+                        ? "#FFEB3B" // Yellow for even bars
+                        : "#F44336" // Red for odd bars
+                    }
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
       </section>
 
       {/* Energy Mix Breakdown with Filters */}
-      <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Energy Mix Breakdown</h2>
+      <section className="bg-[#03346E] shadow-md rounded-lg p-6">
+        <h2 className="text-xl font-semibold mb-4 text-[#e1f5fe]">Energy Mix Breakdown</h2>
 
         {/* Region Selection */}
         <div className="flex items-center space-x-4 mb-4">
@@ -242,7 +282,7 @@ const EmissionTracker: React.FC = () => {
             multiple
             value={selectedRegions}
             onChange={handleRegionSelection}
-            className="p-2 border rounded w-1/2"
+            className="p-2 border rounded bg-[#0B192C] text-[#e1f5fe] border-[#1B262C] focus:outline-none focus:ring-2 focus:ring-[#4fc3f7]"
           >
             {energyMixData.map((region) => (
               <option key={region.name} value={region.name}>
@@ -253,7 +293,7 @@ const EmissionTracker: React.FC = () => {
           <select
             value={chartType}
             onChange={(e) => setChartType(e.target.value as "pie" | "line")}
-            className="p-2 border rounded"
+            className="p-2 border rounded bg-[#0B192C] text-[#e1f5fe] border-[#1B262C] focus:outline-none focus:ring-2 focus:ring-[#4fc3f7]"
           >
             <option value="pie">Pie Chart</option>
             <option value="line">Line Chart</option>
@@ -266,24 +306,24 @@ const EmissionTracker: React.FC = () => {
           <div className="space-y-4">
             {energyMixData.map((region: any, index: number) => (
               <div key={index} className="space-y-2">
-                <h3 className="text-lg font-medium">{region.name}</h3>
-                <div className="relative w-full h-6 bg-gray-300 rounded">
+                <h3 className="text-lg font-medium text-[#e1f5fe]">{region.name}</h3>
+                <div className="relative w-full h-6 bg-[#1B262C] rounded">
                   {/* Renewable Energy */}
                   <div
-                    className="absolute top-0 left-0 h-full bg-green-500 rounded-l"
+                    className="absolute top-0 left-0 h-full bg-[#4caf50] rounded-l"
                     style={{
                       width: `${(region.renewable / (region.renewable + region.nonRenewable)) * 100}%`,
                     }}
                   ></div>
                   {/* Non-Renewable Energy */}
                   <div
-                    className="absolute top-0 right-0 h-full bg-red-500 rounded-r"
+                    className="absolute top-0 right-0 h-full bg-[#f44336] rounded-r"
                     style={{
                       width: `${(region.nonRenewable / (region.renewable + region.nonRenewable)) * 100}%`,
                     }}
                   ></div>
                 </div>
-                <div className="flex justify-between text-sm text-gray-600">
+                <div className="flex justify-between text-sm text-[#81d4fa]">
                   <span>Renewable: {region.renewable.toFixed(2)} gCO₂</span>
                   <span>Non-Renewable: {region.nonRenewable.toFixed(2)} gCO₂</span>
                 </div>
@@ -296,7 +336,7 @@ const EmissionTracker: React.FC = () => {
             <div className="space-y-4">
               {chartType === "pie" ? (
                 <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
+                  <PieChart style={{ backgroundColor: "#021526" }}>
                     <Pie
                       data={filteredEnergyMixData.map((region) => ({
                         name: region.name,
@@ -307,22 +347,39 @@ const EmissionTracker: React.FC = () => {
                       cx="50%"
                       cy="50%"
                       outerRadius={100}
-                      fill="#82ca9d"
                       label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                    >
+                      {filteredEnergyMixData.map((_, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            index % 2 === 0
+                              ? "#4CAF50" // Green for even slices
+                              : "#FF5722" // Orange for odd slices
+                          }
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value: any) => `${value.toFixed(2)} gCO₂`}
+                      contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }}
                     />
-                    <Tooltip formatter={(value: any) => `${value.toFixed(2)} gCO₂`} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={filteredEnergyMixData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value: any) => `${value.toFixed(2)} gCO₂`} />
-                    <Line type="monotone" dataKey="renewable" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="nonRenewable" stroke="#8884d8" />
-                  </LineChart>
+                  <BarChart
+                    layout="vertical" // Rotate the chart 90 degrees anticlockwise
+                    data={filteredEnergyMixData}
+                    style={{ backgroundColor: "#021526" }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+                    <XAxis type="number" stroke="#FFFFFF" />
+                    <YAxis type="category" dataKey="name" stroke="#FFFFFF" />
+                    <Tooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+                    <Bar dataKey="renewable" fill="#4caf50" name="Renewable" />
+                    <Bar dataKey="nonRenewable" fill="#f44336" name="Non-Renewable" />
+                  </BarChart>
                 </ResponsiveContainer>
               )}
             </div>

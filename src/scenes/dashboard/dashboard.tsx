@@ -10,7 +10,8 @@ import {
 } from "chart.js";
 import { AlertCircle, TrendingUp, BarChart2 } from "lucide-react";
 import emissionsData from "../../data/ZA_2023_yearly.json";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend as RechartsLegend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend as RechartsLegend, Cell } from 'recharts';
+import Header from "../../components/header"; // Fixed import path
 
 // Register chart components
 ChartJS.register(
@@ -26,24 +27,20 @@ interface CalculatorScenario {
   date: string;
 }
 
-const recentCalculatorScenarios: CalculatorScenario[] = [
-  { name: "Scenario 1", date: "2023-10-01" },
-  { name: "Scenario 2", date: "2023-10-02" },
-  { name: "Scenario 3", date: "2023-10-03" },
-];
-
 const Dashboard: React.FC = () => {
   const [totalEmissions, setTotalEmissions] = useState<number>(0);
   const [percentChange] = useState<number>(4.2);
   const [topEmitter] = useState<string>("Energy Sector");
 
   const [doughnutData, setDoughnutData] = useState<any>(null);
+  const [recentCalculatorScenarios, setRecentCalculatorScenarios] = useState<CalculatorScenario[]>([]);
+  interface TrackerEntry {
+    category: string;
+    date: string;
+    value: number;
+  }
 
-  const recentTrackerEntries = [
-    { category: "Transportation", date: "2023-10-01", value: 120 },
-    { category: "Industrial", date: "2023-10-02", value: 200 },
-    { category: "Residential", date: "2023-10-03", value: 80 },
-  ];
+  const [recentTrackerEntries, setRecentTrackerEntries] = useState<TrackerEntry[]>([]);
 
   const barChartData = [
     { name: 'January', renewable: 400, nonRenewable: 300 },
@@ -65,40 +62,45 @@ const Dashboard: React.FC = () => {
       datasets: [
         {
           data: [35, 45, 20],
-          backgroundColor: ["#3B82F6", "#10B981", "#F59E0B"],
+          backgroundColor: ["#4CAF50", "#FF5722", "#FFEB3B"], // Green, Orange, Yellow
           borderWidth: 0,
         },
       ],
     });
+
+    // Fetch recent calculator scenarios
+    const scenarios = JSON.parse(localStorage.getItem("calculatorScenarios") || "[]");
+    setRecentCalculatorScenarios(scenarios);
+
+    // Fetch recent tracker entries
+    const entries = JSON.parse(localStorage.getItem("trackerEntries") || "[]");
+    setRecentTrackerEntries(entries);
   }, []);
 
   return (
-    <div className="p-8 h-full">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold">Emissions Dashboard</h1>
-        <p className="mt-2">Comprehensive overview of carbon emissions</p>
-      </header>
+    <div className="p-8 h-full bg-[#021526] text-white">
+      <Header title="Emissions Dashboard" subtitle="Comprehensive overview of carbon emissions" />
 
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-[#03346E] p-6 rounded-xl shadow-sm">
           <div className="flex items-center">
-            <BarChart2 className="w-8 h-8 mr-4" />
+            <BarChart2 className="w-8 h-8 mr-4 text-[#FFEB3B]" /> {/* Yellow icon */}
             <div>
-              <h3 className="text-sm font-medium">Total Emissions</h3>
-              <p className="text-2xl font-bold">
+              <h3 className="text-sm font-medium text-[#81d4fa]">Total Emissions</h3>
+              <p className="text-2xl font-bold text-[#4CAF50]">
                 {totalEmissions.toLocaleString()} tCO₂
               </p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-[#03346E] p-6 rounded-xl shadow-sm">
           <div className="flex items-center">
-            <TrendingUp className="w-8 h-8 mr-4" />
+            <TrendingUp className="w-8 h-8 mr-4 text-[#FF5722]" /> {/* Orange icon */}
             <div>
-              <h3 className="text-sm font-medium">Monthly Change</h3>
-              <p className="text-2xl font-bold">~
+              <h3 className="text-sm font-medium text-[#81d4fa]">Monthly Change</h3>
+              <p className="text-2xl font-bold text-[#FFEB3B]">~
                 {percentChange > 0 ? "+" : ""}
                 {percentChange}%
               </p>
@@ -106,12 +108,12 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-[#03346E] p-6 rounded-xl shadow-sm">
           <div className="flex items-center">
-            <AlertCircle className="w-8 h-8 mr-4" />
+            <AlertCircle className="w-8 h-8 mr-4 text-[#F44336]" /> {/* Red icon */}
             <div>
-              <h3 className="text-sm font-medium">Top Emitter Sector</h3>
-              <p className="text-2xl font-bold">{topEmitter}</p>
+              <h3 className="text-sm font-medium text-[#81d4fa]">Top Emitter Sector</h3>
+              <p className="text-2xl font-bold text-[#FF5722]">{topEmitter}</p>
             </div>
           </div>
         </div>
@@ -119,7 +121,7 @@ const Dashboard: React.FC = () => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-[#0B192C] p-6 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4">Emission Sources</h3>
           <div className="h-72">
             {doughnutData && (
@@ -130,15 +132,20 @@ const Dashboard: React.FC = () => {
                   plugins: {
                     legend: {
                       position: "right",
+                      labels: { color: "#FFFFFF" },
                     },
                   },
+                  layout: {
+                    padding: 20,
+                  },
+                  backgroundColor: "#021526", // Set chart background color
                 }}
               />
             )}
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-[#0B192C] p-6 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4">Energy Comparison</h3>
           <div className="h-72">
             <BarChart
@@ -146,14 +153,29 @@ const Dashboard: React.FC = () => {
               height={300}
               data={barChartData}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              style={{ backgroundColor: "#021526" }} // Set chart background color
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <RechartsTooltip />
-              <RechartsLegend />
-              <Bar dataKey="renewable" stackId="a" fill="#8884d8" />
-              <Bar dataKey="nonRenewable" stackId="a" fill="#82ca9d" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+              <XAxis dataKey="name" stroke="#FFFFFF" />
+              <YAxis stroke="#FFFFFF" />
+              <RechartsTooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+              <RechartsLegend wrapperStyle={{ color: "#FFFFFF" }} />
+              <Bar dataKey="renewable" stackId="a">
+                {barChartData.map((_, index) => (
+                  <Cell
+                    key={`renewable-cell-${index}`}
+                    fill={index % 2 === 0 ? "#4CAF50" : "#81C784"} // Different shades of green
+                  />
+                ))}
+              </Bar>
+              <Bar dataKey="nonRenewable" stackId="a">
+                {barChartData.map((_, index) => (
+                  <Cell
+                    key={`nonRenewable-cell-${index}`}
+                    fill={index % 2 === 0 ? "#F44336" : "#E57373"} // Different shades of red
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </div>
         </div>
@@ -162,13 +184,13 @@ const Dashboard: React.FC = () => {
       {/* Recent Activity Section */}
       <div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-[#0B192C] p-6 rounded-xl shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Recent Tracker Entries</h3>
             <div className="space-y-4">
               {recentTrackerEntries.map((entry, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-[#03001C] rounded-lg"
                 >
                   <div>
                     <p className="font-medium">{entry.category}</p>
@@ -180,13 +202,13 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-[#0B192C] p-6 rounded-xl shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Recent Calculator Scenarios</h3>
             <div className="space-y-4">
               {recentCalculatorScenarios.map((scenario, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-[#03001C] rounded-lg"
                 >
                   <div>
                     <p className="font-medium">{scenario.name}</p>

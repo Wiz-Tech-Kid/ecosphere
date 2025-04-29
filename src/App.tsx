@@ -5,8 +5,8 @@ import { Session } from "@supabase/supabase-js";
 import Topbar from "./scenes/global/topbar";
 import Sidebar from "./scenes/global/sidebar";
 import Login from "./pages/Login";
-import LandingPage from "./pages/LandingPage";
 import PasswordReset from "./pages/PasswordReset";
+import CollaboratorsHub from "./pages/CollaboratorsHub"; // Import Collaborators Hub
 
 const Dashboard = lazy(() => import("./scenes/dashboard/dashboard"));
 const Analytics = lazy(() => import("./scenes/analytics"));
@@ -52,7 +52,6 @@ function App() {
   return (
     <Router basename="/">
       <Routes>
-        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<PasswordReset />} />
         <Route
@@ -71,6 +70,7 @@ function App() {
                         <Route path="/calculator" element={<Calculator />} />
                         <Route path="/emission_tracker" element={<EmissionTracker />} />
                         <Route path="/settings" element={<Settings />} />
+                        <Route path="/collaborators_hub" element={<CollaboratorsHub />} />
                       </Routes>
                     </Suspense>
                   </main>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Bar } from "@nivo/bar";
+import { Bar as NivoBar } from "@nivo/bar";
 import { FileText } from "lucide-react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import Header from "../components/header"; // Fixed import path
 
 // Updated emission factors with African regions (now using litres)
 const ENTERPRISE_EMISSION_FACTORS = {
@@ -68,6 +69,12 @@ const Calculator: React.FC = () => {
     }));
   };
 
+  const saveScenario = (scenario: { name: string; date: string; data: any }) => {
+    const existingScenarios = JSON.parse(localStorage.getItem("calculatorScenarios") || "[]");
+    const updatedScenarios = [scenario, ...existingScenarios].slice(0, 5); // Keep only the last 5 scenarios
+    localStorage.setItem("calculatorScenarios", JSON.stringify(updatedScenarios));
+  };
+
   const calculateEmissions = () => {
     const scope1 =
       inputs.scope1.dieselLitres * ENTERPRISE_EMISSION_FACTORS.diesel +
@@ -98,6 +105,13 @@ const Calculator: React.FC = () => {
         "Packaging Material": inputs.scope3.packagingKg * ENTERPRISE_EMISSION_FACTORS.packaging,
       },
     });
+
+    // Save scenario
+    saveScenario({
+      name: `Scenario ${new Date().toISOString()}`,
+      date: new Date().toLocaleString(),
+      data: { scope1, scope2, scope3, total: scope1 + scope2 + scope3 },
+    });
   };
 
   const exportToPDF = () => {
@@ -105,13 +119,12 @@ const Calculator: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-[#213448] text-white">
+    <div className="flex flex-col flex-1 bg-[#021526] text-[#dd3232]">
       <main className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6">Enterprise Carbon Calculator</h1>
-
+        <Header title="Enterprise Carbon Calculator" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Scope 1 */}
-          <div className="bg-gray-800 shadow-md rounded-lg p-4">
+          <div className="bg-[#03346E] shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 1 (Direct)</h2>
             <input
               type="number"
@@ -130,7 +143,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* Scope 2 */}
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-[#03346E] shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 2 (Indirect Energy)</h2>
             <input
               type="number"
@@ -154,7 +167,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* Scope 3 */}
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-[#03346E] shadow-md rounded-lg p-4">
             <h2 className="text-lg font-semibold mb-4">Scope 3 (Value Chain)</h2>
             <input
               type="number"
@@ -195,82 +208,70 @@ const Calculator: React.FC = () => {
         </button>
 
         {results && (
-          <div className="mt-6 bg-white shadow-md rounded-lg p-4">
+          <div className="mt-6 bg-[#03346E] shadow-md rounded-lg p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Results</h2>
+              <h2 className="text-lg font-semibold text-[#e1f5fe]">Results</h2>
               <button
                 onClick={exportToPDF}
-                className="flex items-center px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="flex items-center px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 Export Report
               </button>
             </div>
-            <p className="text-xl font-bold mb-4">
+            <p className="text-xl font-bold mb-4 text-[#81d4fa]">
               Total Emissions: {results.total.toFixed(2)} kg CO₂e
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-gray-100 rounded">
-                Scope 1: {results.scope1.toFixed(2)} kg
-              </div>
-              <div className="p-4 bg-gray-100 rounded">
-                Scope 2: {results.scope2.toFixed(2)} kg
-              </div>
-              <div className="p-4 bg-gray-100 rounded">
-                Scope 3: {results.scope3.toFixed(2)} kg
-              </div>
-            </div>
-            <div className="mt-6 h-64">
-              <div style={{ height: "100%", width: "100%" }}>
-                <Bar
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
                   data={Object.entries(results.breakdown).map(([key, value]) => ({
                     category: key,
                     emissions: value,
                   }))}
-                  keys={["emissions"]}
-                  indexBy="category"
-                  margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-                  padding={0.3}
-                  valueScale={{ type: "linear" }}
-                  indexScale={{ type: "band", round: true }}
-                  colors={{ scheme: "nivo" }}
-                  axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "Category",
-                    legendPosition: "middle",
-                    legendOffset: 32,
-                  }}
-                  axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "Emissions (kg CO₂e)",
-                    legendPosition: "middle",
-                    legendOffset: -40,
-                  }}
-                  height={256}
-                  width={400}
-                />
-              </div>
+                  style={{ backgroundColor: "#021526" }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+                  <XAxis dataKey="category" stroke="#FFFFFF" />
+                  <YAxis type="number" stroke="#FFFFFF" />
+                  <Tooltip
+                    formatter={(value: any) => `${value.toFixed(2)} kg CO₂e`}
+                    contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }}
+                  />
+                  <Bar dataKey="emissions">
+                    {Object.entries(results.breakdown).map((_, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          index % 3 === 0
+                            ? "#4CAF50" // Green
+                            : index % 3 === 1
+                            ? "#FF5722" // Orange
+                            : "#FFEB3B" // Yellow
+                        }
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         )}
 
-        <div className="mt-6 bg-white shadow-md rounded-lg p-4">
-          <h2 className="text-lg font-semibold mb-4">Emission Trends</h2>
+        <div className="mt-6 bg-[#03346E] shadow-md rounded-lg p-4">
+          <h2 className="text-lg font-semibold mb-4 text-[#e1f5fe]">Emission Trends</h2>
           <AreaChart
             width={500}
             height={300}
             data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            style={{ backgroundColor: "#021526" }} // Keep background as it is
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+            <XAxis dataKey="month" stroke="#FFEB3B" />
+            <YAxis stroke="#FFEB3B" />
+            <Tooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+            <Area type="monotone" dataKey="value" stroke="#4CAF50" fill="#4CAF50" />
           </AreaChart>
         </div>
       </main>
