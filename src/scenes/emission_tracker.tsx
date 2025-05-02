@@ -25,7 +25,7 @@ interface ChartData {
 const EmissionTracker: React.FC = () => {
   const [realTimeData, setRealTimeData] = useState<ChartData[]>([]);
   const [historicalData, setHistoricalData] = useState<ChartData[]>([]);
-  const [intervalType, setIntervalType] = useState<"minutes" | "hours" | "days">("minutes");
+  const [intervalType, setIntervalType] = useState<"seconds" | "minutes" | "hours" | "days">("minutes"); // Updated interval types
   const [regionData, setRegionData] = useState<any[]>([]);
   const [energyMixData, setEnergyMixData] = useState<any[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
@@ -49,6 +49,7 @@ const EmissionTracker: React.FC = () => {
   useEffect(() => {
     // Determine interval duration based on selected interval type
     const intervalDuration = {
+      seconds: 1000, // Added seconds
       minutes: 60000,
       hours: 3600000,
       days: 86400000,
@@ -60,6 +61,7 @@ const EmissionTracker: React.FC = () => {
         const newTime = new Date().toLocaleTimeString("en-GB", {
           hour: "2-digit",
           minute: "2-digit",
+          second: intervalType === "seconds" ? "2-digit" : undefined, // Show seconds if intervalType is seconds
         });
         const newEmissions = Math.random() * (965 - 20) + 20; // Random emissions value between 20 and 965
         const newData = [...prevData, { time: newTime, emissions: newEmissions }];
@@ -121,119 +123,59 @@ const EmissionTracker: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col flex-1 p-6 space-y-10 bg-[#021526] text-white">
-      {/* Page Header */}
+    <div className="h-full p-6 bg-secondary text-text"> {/* Full-screen layout */}
       <Header
         title="Emission Tracker"
         subtitle="Real-Time Simulation, Historical Analysis, and Comparative Analysis of Emissions Data"
       />
 
       {/* Interval Toggle */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 space-x-4">
         <select
           value={intervalType}
-          onChange={(e) => setIntervalType(e.target.value as "minutes" | "hours" | "days")}
+          onChange={(e) => setIntervalType(e.target.value as "seconds" | "minutes" | "hours" | "days")}
           className="p-2 border rounded bg-[#0B192C] text-[#e1f5fe] border-[#1B262C] focus:outline-none focus:ring-2 focus:ring-[#4fc3f7]"
         >
+          <option value="seconds">Seconds</option> {/* Added seconds option */}
           <option value="minutes">Minutes</option>
           <option value="hours">Hours</option>
           <option value="days">Days</option>
         </select>
       </div>
 
-      {/* Real-Time Emissions Line Chart */}
-      <section className="bg-[#03346E] shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Real-Time Emissions</h2>
-        <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={realTimeData}
-              style={{ backgroundColor: "#021526" }} // Set chart background color
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
-              <XAxis
-                dataKey="time"
-                tick={{ fontSize: 12 }}
-                label={{
-                  value: "Time",
-                  position: "insideBottom",
-                  offset: -5,
-                  style: { textAnchor: "middle" },
-                }}
-                stroke="#FFFFFF"
-              />
-              <YAxis
-                domain={[0, 1000]} // Set Y-axis range to 0-1000
-                tick={{ fontSize: 12 }}
-                label={{
-                  value: "Emissions (gCO₂)",
-                  angle: -90,
-                  position: "insideLeft",
-                  style: { textAnchor: "middle" },
-                }}
-                stroke="#FFFFFF"
-              />
-              <Tooltip
-                formatter={(value: any) => `${value.toFixed(2)} gCO₂`}
-                labelFormatter={(label) => `Time: ${label}`}
-                contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }}
-              />
-              <Line
-                type="monotone"
-                dataKey="emissions"
-                stroke="#03346E"
-                strokeWidth={2}
-                dot={false} // Smooth line
-                name="Emissions"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
+      <div className="space-y-6">
+        {/* Real-Time Emissions */}
+        <section className="card">
+          <h2 className="text-lg font-semibold mb-4">Real-Time Emissions</h2>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={realTimeData} style={{ backgroundColor: "#021526" }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+                <XAxis dataKey="time" stroke="#FFFFFF" />
+                <YAxis stroke="#FFFFFF" />
+                <Tooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+                <Line type="monotone" dataKey="emissions" stroke="#4CAF50" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
 
-      {/* Historical Data Analysis */}
-      <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Historical Emissions Analysis</h2>
-        <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={historicalData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis
-                dataKey="time"
-                tick={{ fontSize: 12 }}
-                label={{
-                  value: "Time",
-                  position: "insideBottom",
-                  offset: -5,
-                  style: { textAnchor: "middle" },
-                }}
-              />
-              <YAxis
-                domain={[0, 1000]} // Set Y-axis range to 0-1000
-                tick={{ fontSize: 12 }}
-                label={{
-                  value: "Emissions (gCO₂)",
-                  angle: -90,
-                  position: "insideLeft",
-                  style: { textAnchor: "middle" },
-                }}
-              />
-              <Tooltip
-                formatter={(value: any) => `${value.toFixed(2)} gCO₂`}
-                labelFormatter={(label) => `Time: ${label}`}
-              />
-              <Line
-                type="stepAfter" // Sharp edges for discrete signal
-                dataKey="emissions"
-                stroke="#FF8042" // Bright orange for visibility
-                strokeWidth={2}
-                dot={{ stroke: "#FF8042", strokeWidth: 2 }} // Highlight points
-                name="Historical Emissions"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
+        {/* Historical Emissions */}
+        <section className="card">
+          <h2 className="text-lg font-semibold mb-4">Historical Emissions Analysis</h2>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={historicalData} style={{ backgroundColor: "#021526" }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#152A38" />
+                <XAxis dataKey="time" stroke="#FFFFFF" />
+                <YAxis stroke="#FFFFFF" />
+                <Tooltip contentStyle={{ backgroundColor: "#1B262C", color: "#FFFFFF" }} />
+                <Line type="monotone" dataKey="emissions" stroke="#FF5722" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+      </div>
 
       {/* Regional Comparison */}
       <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">

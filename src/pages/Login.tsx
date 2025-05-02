@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../utils/supabaseClient";
 import {
@@ -10,12 +10,38 @@ import {
   FiEyeOff,
 } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
+import * as THREE from "three";
+import NET from "vanta/dist/vanta.net.min";
+
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const vantaRef = useRef<HTMLDivElement>(null);
+
+  // Vanta.js setup
+  useEffect(() => {
+    const vantaEffect = NET({
+      el: vantaRef.current,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      color: 0x19b895, // Updated color (teal)
+      backgroundColor: 0x7202e, // Updated background color (dark teal)
+      spacing: 14.0, // Updated spacing
+      THREE,
+    });
+
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, []);
 
   // Fields for both login & signup
   const [email, setEmail] = useState("");
@@ -95,13 +121,17 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#072541] to-[#0c3a6d] p-4">
+    <div ref={vantaRef} className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-[#0a2a4a] rounded-xl shadow-2xl overflow-hidden border border-[#1a4b7a]">
         <div className="p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-[#1a4b7a] rounded-full flex items-center justify-center mx-auto mb-4">
-              {/* …logo SVG… */}
+            <div className="w-16 h-16 bg-[#1a4b7a] rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
+              <img
+                src="/assets/icon.jpeg" // Path to icon
+                alt="App Icon"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h1 className="text-2xl font-bold text-[#e1f5fe]">
               {isLogin ? "Welcome Back" : "Create Account"}

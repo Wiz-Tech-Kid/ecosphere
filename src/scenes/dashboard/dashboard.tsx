@@ -72,9 +72,21 @@ const Dashboard: React.FC = () => {
     const scenarios = JSON.parse(localStorage.getItem("calculatorScenarios") || "[]");
     setRecentCalculatorScenarios(scenarios);
 
-    // Fetch recent tracker entries
-    const entries = JSON.parse(localStorage.getItem("trackerEntries") || "[]");
-    setRecentTrackerEntries(entries);
+    // Generate dummy tracker entries with recent dates if none exist
+    const existingEntries = JSON.parse(localStorage.getItem("trackerEntries") || "[]");
+    if (existingEntries.length === 0) {
+      const dummyEntries = [
+        { category: "Transportation", value: 120, date: "2024-10-01 10:00 AM" },
+        { category: "Residential Energy", value: 80, date: "2024-09-15 02:00 PM" },
+        { category: "Industrial Processes", value: 200, date: "2023-12-20 09:30 AM" },
+        { category: "Waste Management", value: 50, date: "2023-11-05 01:15 PM" },
+        { category: "Agriculture", value: 90, date: "2024-01-10 11:45 AM" },
+      ];
+      localStorage.setItem("trackerEntries", JSON.stringify(dummyEntries));
+      setRecentTrackerEntries(dummyEntries);
+    } else {
+      setRecentTrackerEntries(existingEntries);
+    }
   }, []);
 
   return (
@@ -123,7 +135,7 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-[#0B192C] p-6 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4">Emission Sources</h3>
-          <div className="h-72">
+          <div className="h-98"> {/* Enlarged chart height */}
             {doughnutData && (
               <Doughnut
                 data={doughnutData}

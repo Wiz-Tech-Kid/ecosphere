@@ -3,9 +3,9 @@ import { FiUser, FiLock, FiKey, FiLink, FiX } from "react-icons/fi";
 import supabase from "../utils/supabaseClient";
 
 const Profile: React.FC = () => {
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
-  const [phone, setPhone] = useState("+1234567890");
+  const [name, setName] = useState("Tshego Merafe");
+  const [email, setEmail] = useState("abi.moabi@example.com");
+  const [phone, setPhone] = useState("+267 74567890");
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");

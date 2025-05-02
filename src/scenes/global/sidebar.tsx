@@ -85,7 +85,7 @@ const Sidebar: React.FC = () => {
           </Link>
 
           <Link
-            to="/analytics"
+            to="/analytics" // Ensure the path matches the route in App.tsx
             onClick={() => setSelected("Analytics")}
             className={`flex items-center p-3 rounded-lg transition-colors ${
               selected === "Analytics"
