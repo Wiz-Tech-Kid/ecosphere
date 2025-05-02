@@ -71,7 +71,7 @@ The app is built with React, leveraging Supabase for authentication and TensorFl
 ### Emission Tracker
 - **Purpose**: Simulates real-time emissions and analyzes historical data.
 - **Key Features**:
-  - **Real-Time Line Chart**: Updates emissions data every minute.
+  - **Real-Time Line Chart**: Updates emissions data every second, minute, hour, or day.
   - **Regional Comparison**: Compares emissions across regions.
   - **Energy Mix Breakdown**: Visualizes renewable vs. non-renewable energy.
 - **Data Source**: Processes `B_E_D.json` for regional emissions.
@@ -118,7 +118,7 @@ The app is built with React, leveraging Supabase for authentication and TensorFl
 
 ### Tracking Emissions
 1. Go to the **Emission Tracker** page.
-2. Select the interval type (minutes, hours, days).
+2. Select the interval type (seconds, minutes, hours, days) using the new toggle.
 3. View real-time emissions on the line chart.
 4. Analyze historical data and regional comparisons.
 
