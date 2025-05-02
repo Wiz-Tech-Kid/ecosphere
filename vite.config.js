@@ -7,4 +7,5 @@ export default defineConfig({
         'process.env.VITE_APP_TITLE': JSON.stringify('Eco-sphere'),
     },
     plugins: [react()], // Use the react plugin
+   base:process.env.VITE_BASE_PATH || "/ecosphere" 
 });
