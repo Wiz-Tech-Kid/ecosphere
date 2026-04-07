@@ -1,0 +1,20 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "BnrS__EFcwdQZNImikB95"
+uri = "file://TECHNICAL_DOCS.md"
+type = "text"
+title = "Ecosphere v2.1 — Technical Documentation"
+
+[[outputs]]
+id = "vKw_l9lnfVWDHlzTEHyuP"
+uri = "file://SETUP_GUIDE.md"
+type = "text"
+title = "Ecosphere v2.1 — Local Setup Guide"
+
+[[outputs]]
+id = "CUGd-gCRQHTeBZZDVPq09"
+uri = "file://DATABASE_SCHEMA.md"
+type = "text"
+title = "Ecosphere v2.1 — Database & Backend Architecture Schema"

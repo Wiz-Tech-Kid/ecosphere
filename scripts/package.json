@@ -1,0 +1,17 @@
+{
+  "name": "@workspace/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --import tsx ./src/dev.ts",
+    "hello": "node --import tsx ./src/hello.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "concurrently": "^9.2.1",
+    "get-port": "^7.1.0",
+    "tsx": "catalog:"
+  }
+}

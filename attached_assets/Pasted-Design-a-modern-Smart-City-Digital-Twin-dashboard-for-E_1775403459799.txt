@@ -1,0 +1,137 @@
+Design a modern Smart City Digital Twin dashboard for "Ecosphere + POWAMOV" infrastructure monitoring.
+
+This dashboard represents a municipal command center monitoring self-powered road energy harvesting strip arrays installed across Gaborone’s major arterial roads.
+
+Primary Roads to Simulate:
+
+A1 North (Rasesa → Gaborone)
+A1 South (Ramotswa → Gaborone)
+Tlokweng Border Corridor
+Tsolamosese Corridor
+
+Each location contains a 6-strip POWAMOV deceleration array.
+
+The Digital Twin should simulate aggregated edge-controller data from these 4 arterial entry points into the city.
+
+Layout Structure
+
+Create a 3-panel infrastructure command layout:
+
+Top Section:
+City Overview KPI Cards
+
+Display:
+
+Total Vehicles (Live)
+Energy Harvested (kW)
+CO₂ Offset (kg)
+Active Nodes
+Avg Traffic Speed
+
+These should update dynamically.
+
+Middle Section:
+
+4 Arterial Entry Panels
+
+Create 4 large panels:
+
+A1 North (Rasesa)
+A1 South (Ramotswa)
+Tlokweng Border
+Tsolamosese Corridor
+
+Each panel should display:
+
+Vehicles / Minute
+Average Speed (km/h)
+Energy Harvest (kW)
+Heavy Vehicle Percentage
+Node Health Status
+
+Use live animated metrics.
+
+Bottom Section:
+
+City-wide Aggregated Charts
+
+Include:
+
+City-Wide Energy Harvest (Live Line Chart)
+Vehicle Inbound Traffic (Live Chart)
+Carbon Offset Accumulation (Climbing graph)
+
+These should animate gradually upward.
+
+Right Sidebar (Digital Twin Map)
+
+Add a map of Gaborone showing:
+
+4 Active Node Clusters:
+
+A1 North
+A1 South
+Tlokweng
+Tsolamosese
+
+Each node should display:
+
+Green: Healthy
+Yellow: Degrading
+Red: Offline
+
+Add animated pulse when vehicles pass.
+
+Strip Array Visualization
+
+Inside each node panel, show a small visual:
+
+6-strip POWAMOV array:
+
+| Strip | Strip | Strip | Strip | Strip | Strip |
+
+Add rolling wave animation to simulate:
+
+Vehicle hitting strips sequentially.
+
+Predictive Maintenance Widget
+
+Add a small panel showing:
+
+Node Efficiency Drop
+
+Example:
+
+"A1 North Node 3
+Efficiency Drop: 8%
+Cause: Spring fatigue
+Maintenance Window: 3 weeks"
+
+UI Style Requirements
+
+Design Style:
+
+Futuristic infrastructure control room
+Smart city command center
+Dark theme default
+Glassmorphism panels
+Soft glow node indicators
+Smooth real-time animations
+
+Avoid generic SaaS dashboard styling.
+
+Inspired by:
+
+Smart city control rooms
+Power grid dashboards
+Traffic command centers
+Space mission control UI
+
+Mock Data Behavior
+
+Simulate:
+
+Highway nodes have higher speeds (100–120 km/h)
+City nodes slower (40–60 km/h)
+Peak traffic waves
+Rolling energy spikes

@@ -1,0 +1,274 @@
+Ecosphere v2.1 (Structured Upgrade)
+
+You are upgrading the Ecosphere platform to Version 2.1.
+
+This is a structured refactor, not a rebuild.
+Do not remove any existing modules.
+Do not break routing or UI structure.
+
+Goal:
+
+Position POWAMOV as the core product while expanding Ecosphere’s Emissions Tracker into a scalable real-time telemetry platform.
+
+1. Keep Existing Modules (Do Not Remove)
+
+Preserve:
+
+POWAMOV Intelligence
+
+Command Center
+Digital Twin
+Predictive Maintenance
+
+Carbon Intelligence
+
+Energy Analytics
+Regional Carbon
+Manual Carbon Calculator (rename to Manual Calculator)
+
+Operations
+
+Operations Hub
+
+These must remain unchanged.
+
+2. Upgrade Emissions Tracker (Primary Change)
+
+Convert Emissions Tracker into a Real-Time Telemetry Engine supporting multiple business scenarios.
+
+Add top-level scenario selector:
+
+Emissions Tracker Scenario:
+
+Industrial Facility (Taurus Batteries)
+Institutional Campus (Botho University)
+Regional Dataset (Existing Mode)
+
+Default:
+
+Regional Dataset (current behavior)
+
+3. Scenario 1 — Taurus Batteries (Industrial Simulation)
+
+Create industrial telemetry simulation using these sensor groups:
+
+Power Monitoring
+
+Simulate:
+
+Total facility power usage
+Machine load
+Peak demand
+
+Mock data:
+
+kWh
+Load %
+Voltage
+
+Update:
+
+Every 5 seconds
+
+Generator Monitoring
+
+Simulate:
+
+Generator ON/OFF
+Diesel usage
+Runtime
+
+Update:
+
+Every 10 seconds
+
+Gas Detection
+
+Simulate:
+
+Hydrogen gas
+Chemical sensors
+Air quality
+
+Update:
+
+Every 2 seconds
+
+Fire / Smoke Detection
+
+Simulate:
+
+Smoke level
+Heat sensors
+
+Update:
+
+Every 2 seconds
+
+Industrial HVAC
+
+Simulate:
+
+Ventilation
+Cooling load
+
+Update:
+
+Every 5 seconds
+
+Fleet / Logistics
+
+Simulate:
+
+Trucks entering
+Forklifts active
+
+Update:
+
+Every 15 seconds
+
+4. Scenario 2 — Botho University (Institutional Simulation)
+
+Simulate campus telemetry:
+
+Electricity Monitoring
+Building power usage
+Lab power
+
+Update:
+
+Every 10 seconds
+
+HVAC Systems
+Lecture halls
+Labs
+Offices
+
+Update:
+
+Every 10 seconds
+
+Occupancy Monitoring
+
+Simulate:
+
+Students count
+Buildings active
+
+Update:
+
+Every 20 seconds
+
+Campus Vehicles
+
+Simulate:
+
+Security vehicles
+Maintenance vehicles
+
+Update:
+
+Every 20 seconds
+
+Lab Monitoring
+
+Simulate:
+
+Gas sensors
+Temperature
+
+Update:
+
+Every 5 seconds
+
+5. Create Telemetry Engine
+
+Create:
+
+services/telemetryEngine.ts
+
+Responsibilities:
+
+Simulate IoT data streams
+Handle scenario switching
+Generate real-time sensor data
+6. Create Emissions Engine
+
+Create:
+
+services/emissionsEngine.ts
+
+Responsibilities:
+
+Calculate CO2 emissions
+Aggregate sensor data
+Compute offsets
+7. Emissions Tracker UI Updates
+
+Add:
+
+Scenario selector dropdown
+
+Example:
+
+Scenario:
+
+[ Taurus Batteries ▼ ]
+
+Switching scenario updates:
+
+Sensor panels
+Charts
+Metrics
+8. Visual Layout
+
+Maintain existing emissions tracker layout:
+
+Real-time chart
+Sensor panels
+Regional comparison
+
+Replace data source depending on scenario.
+
+9. Maintain Manual Calculator
+
+Do NOT remove calculator
+
+Rename:
+
+Carbon Calculator → Manual Calculator
+
+Keep unchanged.
+
+10. Maintain POWAMOV Separation
+
+POWAMOV remains:
+
+Separate primary module
+
+Do not merge POWAMOV UI into Emissions Tracker.
+
+POWAMOV feeds:
+
+Ecosphere analytics layer
+
+11. Version Update
+
+Update:
+
+Ecosphere v2.0 → Ecosphere v2.1
+
+Update header:
+
+Ecosphere v2.1
+POWAMOV Intelligence Platform
+
+Expected Outcome
+
+After upgrade:
+
+POWAMOV remains core product
+Emissions tracker becomes multi-scenario telemetry engine
+Manual calculator preserved
+Industrial + Campus simulations added
+Architecture remains clean

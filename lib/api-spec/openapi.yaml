@@ -1,0 +1,594 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: POWAMOV Infrastructure Intelligence API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: nodes
+    description: POWAMOV node operations
+  - name: telemetry
+    description: Telemetry and energy data
+  - name: maintenance
+    description: Predictive maintenance
+  - name: analytics
+    description: Energy analytics
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /nodes:
+    get:
+      operationId: listNodes
+      tags: [nodes]
+      summary: List all POWAMOV nodes
+      responses:
+        "200":
+          description: List of nodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Node"
+    post:
+      operationId: createNode
+      tags: [nodes]
+      summary: Create a new node
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNodeBody"
+      responses:
+        "201":
+          description: Created node
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+
+  /nodes/{id}:
+    get:
+      operationId: getNode
+      tags: [nodes]
+      summary: Get a node by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Node details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+        "404":
+          description: Not found
+
+  /nodes/{id}/telemetry:
+    get:
+      operationId: getNodeTelemetry
+      tags: [telemetry]
+      summary: Get recent telemetry for a node
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: Telemetry readings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TelemetryReading"
+
+  /telemetry/live:
+    get:
+      operationId: getLiveTelemetry
+      tags: [telemetry]
+      summary: Get live telemetry snapshot for all nodes
+      responses:
+        "200":
+          description: Live telemetry data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiveTelemetrySnapshot"
+
+  /telemetry/history:
+    get:
+      operationId: getTelemetryHistory
+      tags: [telemetry]
+      summary: Get aggregated telemetry history
+      parameters:
+        - name: hours
+          in: query
+          schema:
+            type: integer
+            default: 24
+      responses:
+        "200":
+          description: Aggregated history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TelemetryAggregate"
+
+  /maintenance/forecasts:
+    get:
+      operationId: getMaintenanceForecasts
+      tags: [maintenance]
+      summary: Get predictive maintenance forecasts
+      responses:
+        "200":
+          description: Maintenance forecasts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MaintenanceForecast"
+
+  /maintenance/alerts:
+    get:
+      operationId: getMaintenanceAlerts
+      tags: [maintenance]
+      summary: Get active maintenance alerts
+      responses:
+        "200":
+          description: Active alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MaintenanceAlert"
+
+  /analytics/summary:
+    get:
+      operationId: getAnalyticsSummary
+      tags: [analytics]
+      summary: Get overall energy analytics summary
+      responses:
+        "200":
+          description: Analytics summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsSummary"
+
+  /analytics/energy-history:
+    get:
+      operationId: getEnergyHistory
+      tags: [analytics]
+      summary: Get energy generation history
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: Energy history by day
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EnergyHistoryPoint"
+
+  /digital-twin/{nodeId}/simulate:
+    post:
+      operationId: simulateDigitalTwin
+      tags: [nodes]
+      summary: Run digital twin compression simulation for a node
+      parameters:
+        - name: nodeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimulationParams"
+      responses:
+        "200":
+          description: Simulation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulationResult"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Node:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        status:
+          type: string
+          enum: [online, offline, maintenance, warning]
+        installDate:
+          type: string
+        degradationPercent:
+          type: number
+        totalEnergyKwh:
+          type: number
+        lastMaintenanceDate:
+          type: string
+          nullable: true
+        vehiclePassesToday:
+          type: integer
+        compressionCycles:
+          type: integer
+      required:
+        - id
+        - name
+        - location
+        - latitude
+        - longitude
+        - status
+        - installDate
+        - degradationPercent
+        - totalEnergyKwh
+        - vehiclePassesToday
+        - compressionCycles
+
+    CreateNodeBody:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+      required:
+        - name
+        - location
+        - latitude
+        - longitude
+
+    TelemetryReading:
+      type: object
+      properties:
+        id:
+          type: string
+        nodeId:
+          type: string
+        timestamp:
+          type: string
+        compressionForceN:
+          type: number
+        energyGeneratedWh:
+          type: number
+        vehicleSpeed:
+          type: number
+        vehicleWeight:
+          type: number
+        temperature:
+          type: number
+        vibration:
+          type: number
+      required:
+        - id
+        - nodeId
+        - timestamp
+        - compressionForceN
+        - energyGeneratedWh
+        - vehicleSpeed
+        - vehicleWeight
+        - temperature
+        - vibration
+
+    LiveTelemetrySnapshot:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        totalNodesOnline:
+          type: integer
+        totalNodesOffline:
+          type: integer
+        totalNodesWarning:
+          type: integer
+        currentPowerOutputW:
+          type: number
+        todayEnergyKwh:
+          type: number
+        todayVehiclePasses:
+          type: integer
+        avgCompressionForceN:
+          type: number
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeLiveStatus"
+      required:
+        - timestamp
+        - totalNodesOnline
+        - totalNodesOffline
+        - totalNodesWarning
+        - currentPowerOutputW
+        - todayEnergyKwh
+        - todayVehiclePasses
+        - avgCompressionForceN
+        - nodes
+
+    NodeLiveStatus:
+      type: object
+      properties:
+        nodeId:
+          type: string
+        powerOutputW:
+          type: number
+        recentPasses:
+          type: integer
+        compressionForceN:
+          type: number
+        status:
+          type: string
+      required:
+        - nodeId
+        - powerOutputW
+        - recentPasses
+        - compressionForceN
+        - status
+
+    TelemetryAggregate:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        avgPowerW:
+          type: number
+        totalEnergyKwh:
+          type: number
+        totalPasses:
+          type: integer
+        avgEfficiencyPercent:
+          type: number
+      required:
+        - timestamp
+        - avgPowerW
+        - totalEnergyKwh
+        - totalPasses
+        - avgEfficiencyPercent
+
+    MaintenanceForecast:
+      type: object
+      properties:
+        nodeId:
+          type: string
+        nodeName:
+          type: string
+        forecastDate:
+          type: string
+        urgency:
+          type: string
+          enum: [low, medium, high, critical]
+        degradationRate:
+          type: number
+        estimatedLifeRemainingDays:
+          type: integer
+        recommendedAction:
+          type: string
+        estimatedCost:
+          type: number
+      required:
+        - nodeId
+        - nodeName
+        - forecastDate
+        - urgency
+        - degradationRate
+        - estimatedLifeRemainingDays
+        - recommendedAction
+        - estimatedCost
+
+    MaintenanceAlert:
+      type: object
+      properties:
+        id:
+          type: string
+        nodeId:
+          type: string
+        nodeName:
+          type: string
+        alertType:
+          type: string
+        severity:
+          type: string
+          enum: [info, warning, critical]
+        message:
+          type: string
+        timestamp:
+          type: string
+        acknowledged:
+          type: boolean
+      required:
+        - id
+        - nodeId
+        - nodeName
+        - alertType
+        - severity
+        - message
+        - timestamp
+        - acknowledged
+
+    AnalyticsSummary:
+      type: object
+      properties:
+        totalEnergyHarvestedKwh:
+          type: number
+        carbonOffsetKg:
+          type: number
+        gridDisplacementPercent:
+          type: number
+        totalVehiclePasses:
+          type: integer
+        avgEfficiencyPercent:
+          type: number
+        activeNodes:
+          type: integer
+        totalNodes:
+          type: integer
+        revenueUsd:
+          type: number
+        co2SavedTons:
+          type: number
+        treesEquivalent:
+          type: integer
+      required:
+        - totalEnergyHarvestedKwh
+        - carbonOffsetKg
+        - gridDisplacementPercent
+        - totalVehiclePasses
+        - avgEfficiencyPercent
+        - activeNodes
+        - totalNodes
+        - revenueUsd
+        - co2SavedTons
+        - treesEquivalent
+
+    EnergyHistoryPoint:
+      type: object
+      properties:
+        date:
+          type: string
+        energyKwh:
+          type: number
+        vehiclePasses:
+          type: integer
+        carbonOffsetKg:
+          type: number
+        efficiencyPercent:
+          type: number
+      required:
+        - date
+        - energyKwh
+        - vehiclePasses
+        - carbonOffsetKg
+        - efficiencyPercent
+
+    SimulationParams:
+      type: object
+      properties:
+        vehicleWeightKg:
+          type: number
+        vehicleSpeedKmh:
+          type: number
+        vehiclesPerHour:
+          type: integer
+        simulationHours:
+          type: integer
+      required:
+        - vehicleWeightKg
+        - vehicleSpeedKmh
+        - vehiclesPerHour
+        - simulationHours
+
+    SimulationResult:
+      type: object
+      properties:
+        nodeId:
+          type: string
+        totalEnergyKwh:
+          type: number
+        peakPowerW:
+          type: number
+        avgCompressionForceN:
+          type: number
+        totalPasses:
+          type: integer
+        efficiencyPercent:
+          type: number
+        degradationAdded:
+          type: number
+        dataPoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimulationDataPoint"
+      required:
+        - nodeId
+        - totalEnergyKwh
+        - peakPowerW
+        - avgCompressionForceN
+        - totalPasses
+        - efficiencyPercent
+        - degradationAdded
+        - dataPoints
+
+    SimulationDataPoint:
+      type: object
+      properties:
+        hour:
+          type: integer
+        energyKwh:
+          type: number
+        powerW:
+          type: number
+        passes:
+          type: integer
+        compressionForceN:
+          type: number
+      required:
+        - hour
+        - energyKwh
+        - powerW
+        - passes
+        - compressionForceN

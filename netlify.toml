@@ -1,0 +1,8 @@
+[build]
+command = "pnpm run build:netlify"
+publish = "artifacts/powamov/dist/public"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
