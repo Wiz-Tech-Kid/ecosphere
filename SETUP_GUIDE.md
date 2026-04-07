@@ -379,7 +379,9 @@ If you only need the frontend (no API features — the core app works without th
    - **GitHub Pages**: push `dist/public` contents to `gh-pages` branch
    - **Nginx/Apache**: serve `dist/public` with a catch-all rule returning `index.html`
 
-For a Netlify repo-based deploy from the workspace root, use `pnpm run build:netlify` and set the publish directory to `artifacts/powamov/dist/public`.
+For a Netlify repo-based deploy from the workspace root, the included `netlify.toml` uses `pnpm run build:netlify`, publishes `artifacts/powamov/dist/public`, rewrites `/api/*` to a Netlify Function, and keeps SPA history routing on `index.html`.
+
+For a Vercel repo-based deploy from the workspace root, the included `vercel.json` uses `pnpm run build:vercel`, publishes `artifacts/powamov/dist/public`, keeps SPA routes working via `index.html` fallback, and exposes the mock Express endpoints on `/api/*` through a Vercel function.
 
 For Nginx, a minimal config:
 ```nginx

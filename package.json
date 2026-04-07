@@ -1,6 +1,6 @@
 {
   "name": "ecosphere-v2.1",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
@@ -13,12 +13,15 @@
     "run": "pnpm run dev",
     "host": "pnpm run start",
     "build": "pnpm --filter @workspace/powamov run build",
+    "build:vercel": "pnpm --filter @workspace/powamov run build",
     "build:web": "pnpm run build",
     "build:local": "pnpm --filter @workspace/powamov run build && pnpm --filter @workspace/api-server run build",
     "build:netlify": "pnpm --filter @workspace/powamov run build:netlify",
     "build:workspace": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck:netlify": "tsc -p netlify/functions/tsconfig.json --noEmit",
+    "typecheck:vercel": "tsc -p api/tsconfig.json --noEmit",
+    "typecheck": "pnpm run typecheck:libs && pnpm run typecheck:vercel && pnpm run typecheck:netlify && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
   "private": true,
   "devDependencies": {
