@@ -371,9 +371,7 @@ export default function CommandCenter() {
               POWAMOV Infrastructure Planning Dashboard
             </h1>
             <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Deployment overview for Greater Gaborone. The command view now reads the shared
-              node-strip simulation store, so node health, traffic count, node output, and
-              maintenance status stay aligned with the Digital Twin and Maintenance explorer.
+              Deployment overview for Greater Gaborone.
             </p>
           </div>
         </div>
@@ -511,10 +509,6 @@ export default function CommandCenter() {
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 Future compatible
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                The live simulation model is ready to extend into dome deployments, bike deployments,
-                and reflector deployments. Phase 1 remains strip-based deployment nodes only.
-              </p>
             </div>
           </div>
         </div>
