@@ -64,7 +64,7 @@ function formatRouteMode(simulation: DeploymentSimulation, hasToken: boolean) {
     return "Mapbox rendered successfully. Corridor spacing is using fallback waypoint geometry.";
   }
 
-  return "Mapbox and Directions API active. Deployment nodes are spaced at 350 m on road geometry.";
+  return "Deployment nodes are spaced at 350 m on road geometry.";
 }
 
 function StatCard({
