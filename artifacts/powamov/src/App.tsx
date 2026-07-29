@@ -24,16 +24,17 @@ const queryClient = new QueryClient();
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
+  const publicPaths = ["/", "/login"];
 
   useEffect(() => {
     const session = getSession();
-    if (!session && location !== "/login") {
+    if (!session && !publicPaths.includes(location)) {
       setLocation("/login");
     }
   }, [location]);
 
   const session = getSession();
-  if (!session) return null;
+  if (!session && !publicPaths.includes(location)) return null;
 
   return <>{children}</>;
 }

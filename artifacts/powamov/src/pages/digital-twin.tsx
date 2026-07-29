@@ -777,9 +777,6 @@ function NodeSimulation() {
             <span className="text-xs text-muted-foreground">{corr.sub}</span>
             <span className="text-[9px] font-mono text-primary bg-primary/8 border border-primary/22 px-1.5 py-0.5 rounded">{corr.speedBase} km/h</span>
           </div>
-          <div className="text-[10px] text-muted-foreground mt-0.5">
-            6-strip POWAMOV array · vertical cross-section engineering view · sequential compression
-          </div>
         </div>
         <div className="flex items-center gap-4">
           {/* Current vehicle badge */}
@@ -1190,7 +1187,7 @@ export default function DigitalTwin() {
     <motion.div initial="initial" animate="animate" variants={{ animate: { transition: { staggerChildren: 0.06 } } }} className="space-y-5">
       <motion.div variants={fadeIn}>
         <h1 className="text-xl font-bold font-mono text-foreground tracking-wide">Digital Twin</h1>
-        <p className="text-sm text-muted-foreground">Engineering cross-section simulation · node-strip architecture · sequential compression</p>
+        <p className="text-sm text-muted-foreground">Engineering cross section simulation with node strip architecture</p>
       </motion.div>
 
       <motion.div variants={fadeIn} className="flex gap-1 bg-card border border-border rounded-lg p-1 w-fit">

@@ -9,3 +9,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare const __POWAMOV_MAPBOX_TOKEN__: string | undefined;
+declare const __POWAMOV_MAPBOX_STYLE_URL__: string | undefined;

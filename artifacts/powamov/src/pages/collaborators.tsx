@@ -227,7 +227,6 @@ export default function Collaborators() {
             <span className="text-xs font-mono text-primary/70 bg-primary/10 border border-primary/20 px-2 py-0.5 rounded">OPERATIONS HUB</span>
           </div>
           <h1 className="text-2xl font-bold font-mono text-foreground tracking-wide">Infrastructure Operations</h1>
-          <p className="text-sm text-muted-foreground">POWAMOV deployments, field teams, and environmental projects — Botswana & South Africa</p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 text-primary text-xs font-mono rounded-lg hover:bg-primary/20 transition-colors">
           <Plus className="h-3.5 w-3.5" />

@@ -25,6 +25,7 @@ import {
   YAxis,
 } from "recharts";
 import { DeploymentMap } from "@/components/command/deployment-map";
+import { getMapboxStyleUrl, getMapboxToken } from "@/lib/runtime-config";
 import {
   hydrateNodeWithRuntime,
   usePowamovSimulationBootstrap,
@@ -54,18 +55,6 @@ const compactFormatter = new Intl.NumberFormat("en-US", {
 const wholeNumberFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
-
-function formatRouteMode(simulation: DeploymentSimulation, hasToken: boolean) {
-  if (!hasToken) {
-    return "Fallback corridor geometry active. Add a Mapbox token for road-snapped deployment paths.";
-  }
-
-  if (!simulation.usedDirections) {
-    return "Mapbox rendered successfully. Corridor spacing is using fallback waypoint geometry.";
-  }
-
-  return "Mapbox and Directions API active. Deployment nodes are spaced at 350 m on road geometry.";
-}
 
 function StatCard({
   label,
@@ -277,9 +266,8 @@ function buildLiveSimulation(
 }
 
 export default function CommandCenter() {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
-  const mapboxStyleUrl =
-    import.meta.env.VITE_MAPBOX_STYLE_URL?.trim() || "mapbox://styles/mapbox/dark-v11";
+  const mapboxToken = getMapboxToken();
+  const mapboxStyleUrl = getMapboxStyleUrl();
 
   usePowamovSimulationBootstrap(mapboxToken);
 
@@ -371,22 +359,12 @@ export default function CommandCenter() {
               POWAMOV Infrastructure Planning Dashboard
             </h1>
             <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Deployment overview for Greater Gaborone. The command view now reads the shared
-              node-strip simulation store, so node health, traffic count, node output, and
-              maintenance status stay aligned with the Digital Twin and Maintenance explorer.
+              Live deployment status for Greater Gaborone with aligned node health traffic and
+              maintenance data.
             </p>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
-          <div className="text-[11px] font-mono uppercase tracking-[0.24em] text-muted-foreground">
-            Route Mode
-          </div>
-          <div className="mt-2 flex items-center gap-2 text-sm text-foreground">
-            <Route className="h-4 w-4 text-primary" />
-            <span>{formatRouteMode(liveSimulation, Boolean(mapboxToken))}</span>
-          </div>
-        </div>
       </motion.div>
 
       <motion.div variants={stagger} initial="initial" animate="animate" className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">

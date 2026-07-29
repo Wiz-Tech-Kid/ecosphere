@@ -17,6 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getMapboxToken } from "@/lib/runtime-config";
 import {
   hydrateNodeWithRuntime,
   usePowamovSimulationBootstrap,
@@ -153,7 +154,7 @@ function buildMaintenanceProfile(
 }
 
 export default function Maintenance() {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
+  const mapboxToken = getMapboxToken();
   usePowamovSimulationBootstrap(mapboxToken);
 
   const simulation = usePowamovSimulationStore((state) => state.simulation);
@@ -278,9 +279,6 @@ export default function Maintenance() {
         <h1 className="text-xl font-bold font-mono tracking-wide text-foreground">
           Node and Strip Health Explorer
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Corridor-filtered node drill-down using the live POWAMOV node-strip simulation feed
-        </p>
       </motion.div>
 
       <motion.div variants={fadeIn} className="grid grid-cols-2 gap-3 lg:grid-cols-5">

@@ -8,6 +8,6 @@
     "./types": "./src/generated/types/index.ts"
   },
   "dependencies": {
-    "zod": "catalog:"
+    "zod": "*"
   }
 }

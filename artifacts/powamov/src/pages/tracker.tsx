@@ -24,6 +24,7 @@ import {
   calcIndustrialEmissions, calcCampusEmissions, getIndustrialRiskLevel,
   type IndustrialEmissions, type CampusEmissions,
 } from "@/services/emissionsEngine";
+import { getMapboxToken } from "@/lib/runtime-config";
 import { usePowamovSimulationBootstrap, usePowamovSimulationStore } from "@/stores/powamovSimulationStore";
 
 /* ── Enterprise palette ── */
@@ -164,7 +165,6 @@ function IndustrialView() {
               {risk.toUpperCase()}
             </span>
           </div>
-          <div className="text-[10px] text-muted-foreground">Live sensor telemetry · 6 sensor groups · 2–15s update cycle</div>
         </div>
         <div className="flex items-center gap-1.5 text-[9px] font-mono text-muted-foreground">
           <div className="h-1.5 w-1.5 rounded-full animate-pulse bg-destructive"/>
@@ -599,7 +599,7 @@ const SCENARIOS: Array<{
 export default function TelemetryEngine() {
   const [scenario, setScenario] = useState<Scenario>("regional");
   const active = SCENARIOS.find(s => s.id === scenario)!;
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
+  const mapboxToken = getMapboxToken();
 
   usePowamovSimulationBootstrap(mapboxToken);
 
@@ -631,7 +631,6 @@ export default function TelemetryEngine() {
             <span className="text-[9px] font-mono text-primary/60">v2.1</span>
           </div>
           <h1 className="text-xl font-bold font-mono text-foreground">Real-Time Emission Telemetry</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Multi-scenario IoT simulation · Select a data source below</p>
         </div>
       </motion.div>
 

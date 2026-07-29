@@ -14,6 +14,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { getMapboxToken } from "@/lib/runtime-config";
 import { usePowamovSimulationBootstrap, usePowamovSimulationStore } from "@/stores/powamovSimulationStore";
 
 const fadeIn = {
@@ -86,7 +87,7 @@ function HeroStat({
 }
 
 export default function Analytics() {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
+  const mapboxToken = getMapboxToken();
   usePowamovSimulationBootstrap(mapboxToken);
 
   const simulation = usePowamovSimulationStore((state) => state.simulation);
@@ -158,9 +159,6 @@ export default function Analytics() {
     <motion.div initial="initial" animate="animate" variants={stagger} className="space-y-5">
       <motion.div variants={fadeIn}>
         <h1 className="text-xl font-bold font-mono tracking-wide text-foreground">Energy Analytics</h1>
-        <p className="text-sm text-muted-foreground">
-          Live energy harvest, carbon offset, and network efficiency from the POWAMOV simulation store
-        </p>
       </motion.div>
 
       <motion.div variants={stagger} animate="animate" initial="initial" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -314,5 +312,4 @@ export default function Analytics() {
         </div>
       </motion.div>
     </motion.div>
-  );
-}
+  );}

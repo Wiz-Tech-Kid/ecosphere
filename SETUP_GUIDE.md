@@ -254,7 +254,7 @@ Open the root `package.json` and update `scripts`:
 ```json
 {
   "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) exit 0 ;; esac; case \"$(basename \"${npm_execpath:-}\")\" in pnpm|pnpm.cjs|pnpm.mjs) exit 0 ;; esac; echo \"Use pnpm instead\" >&2; exit 1'",
     "dev:frontend": "pnpm --filter @workspace/powamov run dev",
     "dev:api": "pnpm --filter @workspace/api-server run dev",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",

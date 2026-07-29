@@ -3,7 +3,7 @@
   "version": "2.1.1",
   "license": "MIT",
   "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) exit 0 ;; esac; case \"$(basename \"${npm_execpath:-}\")\" in pnpm|pnpm.cjs|pnpm.mjs) exit 0 ;; esac; echo \"Use pnpm instead\" >&2; exit 1'",
     "dev": "pnpm --filter @workspace/scripts run dev",
     "dev:frontend": "pnpm --filter @workspace/powamov run dev",
     "dev:backend": "pnpm --filter @workspace/api-server run dev",
@@ -25,11 +25,11 @@
   },
   "private": true,
   "devDependencies": {
-    "concurrently": "^9.2.1",
-    "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
+    "concurrently": "*",
+    "prettier": "*",
+    "typescript": "*"
   },
   "dependencies": {
-    "mapbox-gl": "^3.21.0"
+    "mapbox-gl": "*"
   }
 }

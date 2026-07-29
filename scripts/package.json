@@ -9,9 +9,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
-    "concurrently": "^9.2.1",
-    "get-port": "^7.1.0",
-    "tsx": "catalog:"
+    "@types/node": "*",
+    "concurrently": "*",
+    "get-port": "*",
+    "tsx": "*"
   }
 }

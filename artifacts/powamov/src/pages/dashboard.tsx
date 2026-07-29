@@ -9,6 +9,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 import BW_2024 from "@/data/BW_2024_monthly.json";
 import ZA_2024 from "@/data/ZA_2024_monthly.json";
+import { getMapboxToken } from "@/lib/runtime-config";
 import { usePowamovSimulationBootstrap, usePowamovSimulationStore } from "@/stores/powamovSimulationStore";
 
 const fadeIn = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4 } };
@@ -67,7 +68,7 @@ function QuickNavCard({ href, icon: Icon, title, desc, color }: {
 }
 
 export default function Dashboard() {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
+  const mapboxToken = getMapboxToken();
   usePowamovSimulationBootstrap(mapboxToken);
 
   const simulation = usePowamovSimulationStore((state) => state.simulation);
