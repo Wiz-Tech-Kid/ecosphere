@@ -489,10 +489,6 @@ export default function CommandCenter() {
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 Future compatible
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                The live simulation model is ready to extend into dome deployments, bike deployments,
-                and reflector deployments. Phase 1 remains strip-based deployment nodes only.
-              </p>
             </div>
           </div>
         </div>
