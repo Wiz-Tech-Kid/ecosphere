@@ -2,8 +2,6 @@ import path from 'path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
 
-import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
-
 const rawPort = process.env.PORT;
 
 if (!rawPort) {
@@ -30,20 +28,6 @@ export default defineConfig({
   base: basePath,
   plugins: [
     svelte(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== 'production' &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import('@replit/vite-plugin-cartographer').then((m) =>
-            m.cartographer({
-              root: path.resolve(import.meta.dirname, '..'),
-            }),
-          ),
-          await import('@replit/vite-plugin-dev-banner').then((m) =>
-            m.devBanner(),
-          ),
-        ]
-      : []),
   ],
   resolve: {
     alias: {
@@ -65,7 +49,6 @@ export default defineConfig({
     port,
     strictPort: true,
     host: '0.0.0.0',
-    allowedHosts: true,
     fs: {
       strict: true,
     },
@@ -73,6 +56,5 @@ export default defineConfig({
   preview: {
     port,
     host: '0.0.0.0',
-    allowedHosts: true,
   },
 });
