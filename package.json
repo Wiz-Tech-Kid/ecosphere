@@ -1,35 +1,19 @@
 {
-  "name": "ecosphere-v2.1",
-  "version": "2.1.1",
+  "name": "workspace",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) exit 0 ;; esac; case \"$(basename \"${npm_execpath:-}\")\" in pnpm|pnpm.cjs|pnpm.mjs) exit 0 ;; esac; echo \"Use pnpm instead\" >&2; exit 1'",
-    "dev": "pnpm --filter @workspace/scripts run dev",
-    "dev:frontend": "pnpm --filter @workspace/powamov run dev",
-    "dev:backend": "pnpm --filter @workspace/api-server run dev",
-    "start": "pnpm run build:local && PORT=3000 SERVE_WEB=1 pnpm --filter @workspace/api-server run start",
-    "start:frontend": "pnpm --filter @workspace/powamov run start",
-    "start:backend": "pnpm --filter @workspace/api-server run start",
-    "run": "pnpm run dev",
-    "host": "pnpm run start",
-    "build": "pnpm --filter @workspace/powamov run build",
-    "build:vercel": "pnpm --filter @workspace/powamov run build",
-    "build:web": "pnpm run build",
-    "build:local": "pnpm --filter @workspace/powamov run build && pnpm --filter @workspace/api-server run build",
-    "build:netlify": "pnpm --filter @workspace/powamov run build:netlify",
-    "build:workspace": "pnpm run typecheck && pnpm -r --if-present run build",
+    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck:netlify": "tsc -p netlify/functions/tsconfig.json --noEmit",
-    "typecheck:vercel": "tsc -p api/tsconfig.json --noEmit",
-    "typecheck": "pnpm run typecheck:libs && pnpm run typecheck:vercel && pnpm run typecheck:netlify && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
   "private": true,
-  "devDependencies": {
-    "concurrently": "*",
-    "prettier": "*",
-    "typescript": "*"
-  },
   "dependencies": {
-    "mapbox-gl": "*"
+    "@replit/connectors-sdk": "^0.4.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "typescript": "~5.9.3"
   }
 }

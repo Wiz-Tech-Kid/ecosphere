@@ -1,0 +1,59 @@
+<script lang="ts">
+  import { appHref } from '../../app/routes';
+  import { connection, telemetryRows, latestEvent, eventCount } from '../../stores/telemetry';
+  import { devices } from '../../stores/devices';
+  import { energySources } from '../../stores/energySources';
+  export let path = '/energy-flow';
+  const titles: Record<string,string> = {
+    '/energy-flow':'Energy Flow','/energy-sources':'Energy Sources','/devices':'Meters & Devices',
+    '/data-sources':'Data Sources','/sustainability':'Sustainability','/costs':'Costs',
+    '/reports':'Reports','/scheduling':'Smart Scheduling','/demand-response':'Demand Response','/rates':'Rate Analysis'
+  };
+  const energySourceFields = ['source_id','source_name','source_type','location','capacity','current_power','energy_today','status','telemetry_quality'];
+  const reports = ['Daily Energy Report','Weekly Energy Report','Monthly Energy Report','Building Performance Report','Energy Cost Report','Sustainability Report','Carbon Report'];
+  const prerequisites = ['Verified electricity history','Energy source mix','Scope-specific emission factors','Building area for intensity'];
+  const power = (value: number | null) => value === null ? 'Unavailable' : Math.abs(value) >= 1000 ? `${(value / 1000).toFixed(2)} kW` : `${value.toFixed(1)} W`;
+  const time = (value: string) => { const d = new Date(value); return Number.isFinite(d.getTime()) ? d.toLocaleTimeString() : 'Unavailable'; };
+  const origin = (value: string) => value === 'simulated' ? 'Reference data' : value;
+</script>
+
+<div class="content fade-in">
+  {#if path === '/energy-flow'}
+    <div class="page-head"><div><div class="eyebrow">HIERARCHICAL ENERGY MODEL</div><h1 class="page-title">Energy Flow</h1><p class="page-sub">Follow the known location hierarchy and keep every electrical boundary distinct.</p></div><span class="tag unknown">CONCEPTUAL VIEW</span></div>
+    <div class="placeholder-hero"><div><div class="eyebrow">SOURCE → SPACE → SYSTEM</div><h2>Known boundaries, no invented totals.</h2><p>Campus source identities have not been configured. The location model below remains useful without implying a source relationship.</p></div><div class="placeholder-symbol">↘</div></div>
+    <div class="panel panel-pad"><div class="source-schema">{#each [{title:'Energy sources',desc:'Not configured',href:'/energy-sources'},{title:'BU MAIN CAMPUS',desc:'Site aggregate unavailable',href:'/sites'},{title:'SWANENG',desc:'Building aggregate unavailable',href:'/sites'},{title:'S1 · floor',desc:'Shared ICT boundary reported separately',href:'/sites'},{title:'S1_02 · room',desc:'Direct room load',href:'/rooms/S1_02'},{title:'HVAC · Lighting · Socket',desc:'Direct room circuit breakdown',href:'/rooms/S1_02'}] as node}<a class="schema-field" href={node.href}><strong>{node.title}</strong><span>{node.desc}</span></a>{/each}</div><div class="quality-note">Camera and access-point endpoint readings are attribution only. The floor-level DBR rack is its own boundary and is not added to room direct load.</div></div>
+  {:else if path === '/energy-sources'}
+    <div class="page-head"><div><div class="eyebrow">ENERGY INFRASTRUCTURE</div><h1 class="page-title">Energy Sources</h1><p class="page-sub">An extensible source register, ready for verified BU configuration.</p></div><span class="tag unknown">NO SOURCES CONFIGURED</span></div>
+    <div class="placeholder-hero"><div><div class="eyebrow">SOURCE MODEL</div><h2>Source identities are intentionally blank.</h2><p>No source names, types, capacities or readings have been supplied. Add verified source configuration when available.</p></div><div class="placeholder-symbol">◇</div></div>
+    <section class="panel panel-pad"><div class="panel-head"><h2 class="panel-title">Energy source schema</h2><span class="panel-note">{$energySources.length} configured source records</span></div><div class="source-schema">{#each energySourceFields as field}<div class="schema-field"><strong>{field}</strong><span>Not configured</span></div>{/each}</div></section>
+  {:else if path === '/devices'}
+    <div class="page-head"><div><div class="eyebrow">FIELD INFRASTRUCTURE</div><h1 class="page-title">Meters & Devices</h1><p class="page-sub">Devices observed from the selected telemetry source in this browser session.</p></div><span class="tag {$connection.status === 'LIVE' ? 'good' : $connection.status === 'OFFLINE' ? 'offline' : 'unknown'}">{$connection.status === 'DEMO' ? 'REFERENCE DATA' : $connection.status}</span></div>
+    <section class="panel panel-pad"><div class="panel-head"><h2 class="panel-title">Device register</h2><span class="panel-note">Only devices reported by the selected stream appear.</span></div><div class="wide-table"><table class="table"><thead><tr><th>Device ID</th><th>Type / system</th><th>Location / boundary</th><th>State</th><th>Power</th><th>Energy</th><th>Last seen</th><th>Quality</th><th>Origin</th></tr></thead><tbody>{#each $devices as device}<tr><td><strong>{device.device_id}</strong></td><td>{device.device_type}</td><td>{device.location} · {device.measurement_boundary || 'system'}</td><td>{device.status}</td><td class="mono">{power(device.current_power_w)}</td><td>{device.energy_kwh === null ? 'Unavailable' : `${device.energy_kwh.toFixed(2)} kWh`}</td><td>{device.last_seen ? time(device.last_seen) : 'Unavailable'}</td><td><span class="tag {device.quality}">{device.quality}</span></td><td><span class="tag {device.data_origin === 'measured' ? 'good' : 'unknown'}">{origin(device.data_origin)}</span></td></tr>{:else}<tr><td colspan="9">No device telemetry has been received.</td></tr>{/each}</tbody></table></div><div class="quality-note">Room endpoint attribution is not added to floor DBR boundary power.</div></section>
+  {:else if path === '/data-sources'}
+    <div class="page-head"><div><div class="eyebrow">TELEMETRY PROVENANCE</div><h1 class="page-title">Data Sources</h1><p class="page-sub">Inspect the selected browser provider and the origin of its values.</p></div></div>
+    <div class="mode-banner"><span class="tag {$connection.status === 'LIVE' ? 'good' : $connection.status === 'OFFLINE' ? 'offline' : 'simulated'}">{$connection.status}</span><span>Connection reflects the selected frontend provider. No broker or protocol status is assumed.</span></div>
+    <section class="panel panel-pad"><div class="panel-head"><h2 class="panel-title">Configured providers</h2><a class="panel-note" href={appHref('/settings')}>Configure LIVE endpoint →</a></div><div class="wide-table"><table class="table"><thead><tr><th>Source</th><th>Protocol</th><th>Status</th><th>Messages</th><th>Last message</th><th>Quality</th></tr></thead><tbody>
+      <tr><td>Node-RED WebSocket bridge</td><td>WebSocket</td><td><span class="tag {$connection.status === 'LIVE' ? 'good' : $connection.status === 'OFFLINE' ? 'offline' : 'unknown'}">{$connection.status}</span></td><td>{$connection.status === 'LIVE' ? $eventCount : '—'}</td><td>{$latestEvent ? time($latestEvent) : 'Unavailable'}</td><td>{$connection.status === 'LIVE' ? 'Observed' : 'Unknown'}</td></tr>
+      <tr><td>Browser demo provider</td><td>Local fixtures</td><td><span class="tag good">Available</span></td><td>Variable</td><td>On selection</td><td>Simulated origin</td></tr>
+    </tbody></table></div>
+      <div class="panel-head" style="margin:20px 0 8px"><h2 class="panel-title">Latest normalized events</h2><span class="panel-note">{$eventCount} events in this session</span></div>
+      <div class="wide-table"><table class="table"><thead><tr><th>Device</th><th>Origin</th><th>Quality</th><th>Timestamp</th><th>Boundary</th></tr></thead><tbody>{#each $telemetryRows.slice(0,8) as row}<tr><td>{row.deviceId}</td><td>{row.origin}</td><td>{row.quality}</td><td>{time(row.timestamp)}</td><td>{row.boundary || 'Unspecified'}</td></tr>{:else}<tr><td colspan="5">No normalized messages received.</td></tr>{/each}</tbody></table></div>
+      <div class="quality-note">The browser demo provider emits simulated reference values; these are not physical meter readings. A live label appears only after the WebSocket is established.</div>
+    </section>
+  {:else if path === '/sustainability'}
+    <div class="page-head"><div><div class="eyebrow">SUSTAINABILITY</div><h1 class="page-title">Environmental impact</h1><p class="page-sub">Sustainability metrics depend on trusted energy and source data.</p></div><span class="tag unknown">DATA NOT CONFIGURED</span></div>
+    <div class="grid stats">{#each ['Scope 1 emissions','Scope 2 emissions','Scope 3 emissions','Carbon intensity'] as label}<div class="panel metric"><div class="metric-label">{label}</div><div class="metric-value" style="font-size:20px">Unavailable</div><div class="metric-foot">No emission factors or source mix supplied</div></div>{/each}</div>
+    <div class="panel panel-pad"><div class="panel-head"><h2 class="panel-title">Inputs required</h2></div><div class="source-schema">{#each prerequisites as field}<div class="schema-field"><strong>{field}</strong><span>Not configured</span></div>{/each}</div></div>
+  {:else if path === '/costs'}
+    <div class="page-head"><div><div class="eyebrow">ENERGY COSTS</div><h1 class="page-title">Cost visibility</h1><p class="page-sub">Financial reporting becomes meaningful when energy history and tariffs are available.</p></div><span class="tag unknown">NOT CONFIGURED</span></div>
+    <div class="grid stats">{#each ['Cost today','Cost this month','Cost forecast','Cost per area'] as label}<div class="panel metric"><div class="metric-label">{label}</div><div class="metric-value" style="font-size:20px">Unavailable</div><div class="metric-foot">Tariff and billing data required</div></div>{/each}</div>
+    <div class="notice">No currency totals are shown because tariff, billing and area data are not available. No cost is inferred from room readings.</div>
+  {:else if path === '/reports'}
+    <div class="page-head"><div><div class="eyebrow">REPORTING</div><h1 class="page-title">Reports</h1><p class="page-sub">Report definitions are ready to connect to durable telemetry history.</p></div></div>
+    <section class="panel panel-pad"><div class="panel-head"><h2 class="panel-title">Available report templates</h2><span class="tag unknown">EXPORT NOT CONFIGURED</span></div><div class="room-grid">{#each reports as name}<div class="schema-field"><strong>{name}</strong><span>Requires durable source data</span></div>{/each}</div><div class="quality-note">CSV, XLSX and PDF generation are not connected in this browser-only milestone.</div></section>
+  {:else}
+    <div class="page-head"><div><div class="eyebrow">OPTIMIZATION MODULE</div><h1 class="page-title">{titles[path] || 'Workspace'}</h1><p class="page-sub">This module does not control equipment or create financial forecasts.</p></div><span class="tag unknown">NOT CONFIGURED</span></div>
+    <div class="placeholder-hero"><div><div class="eyebrow">PREREQUISITES</div><h2>{titles[path]} needs trusted inputs.</h2><p>{#if path === '/scheduling'}Verified schedules, occupancy inputs, control permissions and connected device capabilities must be configured before recommendations are shown.{:else if path === '/demand-response'}A demand-response event source, verified flexible loads, user permissions and an auditable control path are required before participation can be enabled.{:else}Tariff periods, rates, billing rules and durable metered history must be configured before rate comparisons can be calculated.{/if}</p></div><div class="placeholder-symbol">◇</div></div>
+    <div class="notice">No control command or financial value is inferred from room readings.</div>
+  {/if}
+</div>

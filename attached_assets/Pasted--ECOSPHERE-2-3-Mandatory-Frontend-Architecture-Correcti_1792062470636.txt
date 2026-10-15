@@ -1,0 +1,363 @@
+# ECOSPHERE 2.3: Mandatory Frontend Architecture Correction to Svelte 5
+
+## Objective
+
+Refactor the existing Ecosphere 2.3 project so that **the actual production frontend is built entirely with Svelte 5,TypeScript and Vite**.
+
+The current repository appears to contain a mixture of React and Svelte. It includes `App.svelte`, `App.tsx`, `main.ts`, `main.tsx`,Svelte components,React UI components,React hooks and a separate React mockup sandbox.
+
+This is not the architecture I want for the application.
+
+I want Svelte 5 to be the primary and exclusive frontend framework for Ecosphere 2.3. Vite remains the build tool. TypeScript remains the language. Do not migrate the application to Next.js or SvelteKit.
+
+Do not merely add Svelte files while leaving the production application running on React. Audit and correct the actual entry point,build configuration,dependencies and component architecture.
+
+## 1. Audit the existing repository first
+
+Inspect the existing files before making changes.
+
+Examine:
+
+`package.json`
+
+`pnpm-workspace.yaml`
+
+`pnpm-lock.yaml`
+
+`artifacts/ecosphere-23/package.json`
+
+`artifacts/ecosphere-23/vite.config.ts`
+
+`artifacts/ecosphere-23/index.html`
+
+`artifacts/ecosphere-23/src/main.ts`
+
+`artifacts/ecosphere-23/src/main.tsx`
+
+`artifacts/ecosphere-23/src/app/App.svelte`
+
+`artifacts/ecosphere-23/src/App.tsx`
+
+`artifacts/ecosphere-23/src/features/workspace/Workspace.svelte`
+
+`artifacts/ecosphere-23/src/services/telemetry/`
+
+`artifacts/ecosphere-23/src/stores/`
+
+`artifacts/ecosphere-23/src/types/`
+
+Determine which entry point Vite actually uses and which components are currently imported into the production application.
+
+Do not assume that a file is active merely because it exists.
+
+Produce a brief architecture assessment,then implement the correction. Do not stop after providing recommendations.
+
+## 2. Establish one canonical Svelte application
+
+The production frontend must have one clear entry point.
+
+Use this architecture unless the existing configuration reveals a compelling reason to adjust the exact paths:
+
+`artifacts/ecosphere-23/src/main.ts`
+
+This entry point must initialize the Svelte application by importing the canonical root Svelte component.
+
+Use:
+
+`artifacts/ecosphere-23/src/app/App.svelte`
+
+as the root application component.
+
+Configure Vite to use the official Svelte plugin and compile Svelte components correctly.
+
+Ensure that the HTML entry point references the Svelte application entry point rather than a React TSX entry point.
+
+Remove the ambiguity between `main.ts` and `main.tsx` and between `App.svelte` and `App.tsx`. Retain only the files that the final architecture genuinely needs.
+
+The running application must mount through Svelte. Merely creating `App.svelte` while leaving `main.tsx` active is not an acceptable solution.
+
+## 3. Remove React from the production frontend
+
+Audit and migrate or remove React specific frontend code that is part of the production application.
+
+This includes,where applicable:
+
+`react`
+
+`react-dom`
+
+React Vite plugins
+
+React JSX and TSX UI components
+
+React hooks
+
+React specific component libraries
+
+React based routing
+
+React specific UI state management
+
+React specific chart wrappers
+
+React Query hooks that cannot run without React
+
+The current `src/components/ui/` directory contains many `.tsx` components. Do not rename those files to `.svelte` and assume the migration is complete. Reimplement required UI components using valid Svelte syntax and Svelte compatible libraries.
+
+Use the imported UI and UX skill to guide the visual design and component implementation.
+
+If a required component library already has a Svelte compatible implementation,prefer that implementation. Do not introduce unnecessary dependencies.
+
+Audit `lib/api-client-react/` separately. If it contains generated React hooks,replace the frontend integration with a framework independent TypeScript API client or an equivalent Svelte compatible implementation. Preserve useful API schemas,generated types,OpenAPI definitions and validation logic.
+
+Do not remove the backend API,shared database package or useful generated contracts simply because their directory names contain references to React.
+
+## 4. Preserve the project workspace and backend
+
+This is a frontend architecture correction,not an instruction to rebuild the entire repository.
+
+Preserve:
+
+`artifacts/api-server/`
+
+`lib/api-spec/`
+
+`lib/api-zod/`
+
+`lib/db/`
+
+The existing database and backend responsibilities must not be rewritten unnecessarily.
+
+The separate `artifacts/mockup-sandbox/` may remain a separate development workspace if it is genuinely useful. It must not be the production Ecosphere application or introduce React runtime dependencies into the production frontend bundle.
+
+Do not edit generated `dist` assets manually. Regenerate build artifacts through the appropriate build process.
+
+Preserve useful Svelte components,TypeScript types,telemetry normalization logic,stores and project configuration wherever possible.
+
+The objective is to correct the application without throwing away useful work.
+
+## 5. Use Svelte 5 conventions
+
+New frontend components must use Svelte 5 and TypeScript.
+
+Use Svelte native component composition and reactivity. For new components,prefer Svelte 5 runes such as `$state`,`$derived` and `$effect` where appropriate.
+
+Use `.svelte` files for visual components and `.ts` files for framework independent services,domain logic and types.
+
+Do not write React components,JSX,TSX or React hooks for production screens.
+
+Keep `App.svelte` focused on application composition and routing rather than placing the entire application in one component.
+
+Use the existing feature based project structure and improve it where necessary.
+
+A suitable organization is:
+
+`src/app/`
+
+`src/components/`
+
+`src/features/dashboard/`
+
+`src/features/sites/`
+
+`src/features/live-energy/`
+
+`src/features/rooms/`
+
+`src/features/analytics/`
+
+`src/features/alerts/`
+
+`src/features/devices/`
+
+`src/features/sources/`
+
+`src/services/telemetry/`
+
+`src/stores/`
+
+`src/types/`
+
+Adapt the precise structure to the existing repository rather than creating duplicate directories.
+
+## 6. Preserve the Ecosphere product direction
+
+Ecosphere is an energy management and energy intelligence platform for buildings,campuses and eventually broader infrastructure portfolios.
+
+It is not a Powamov centric application and it must not become a Node RED interface.
+
+Its purpose is to collect and organize energy telemetry,show where energy is consumed,identify system behaviour and eventually support analysis,energy efficiency,operational decisions,cost management and sustainability reporting.
+
+The main hierarchy is:
+
+Organization → Site → Building → Floor → Room → System → Device or Meter.
+
+The current demonstration environment is:
+
+Organization: BU
+
+Site: BU_MAIN_CAMPUS
+
+Building: SWANENG
+
+Floor: S1
+
+Rooms: S1_01 through S1_13.
+
+The primary demonstration room is SWANENG / S1 / S1_02.
+
+Its energy systems include HVAC,lighting,socket and projector loads,with ICT endpoints represented separately.
+
+Do not hardcode the current building as the permanent product architecture. Model locations and devices as configurable entities so further buildings,sites and energy sources can be added.
+
+The eventual three BU energy sources have not yet been modelled. Create an extensible energy source model without inventing their names or characteristics.
+
+Powamov should eventually be one possible infrastructure or energy source integration rather than the identity of the platform.
+
+## 7. Implement the first useful application experiences
+
+After the Svelte migration,the primary application should support these first experiences:
+
+**Dashboard**
+
+Show current power,today's energy,consumption by system,site hierarchy,telemetry health and important events.
+
+**Sites**
+
+Allow navigation from campus to building,floor and room.
+
+**Live Energy**
+
+Show the latest available telemetry,device state,measurement quality,data origin and last update time.
+
+**Room Details**
+
+Make SWANENG / S1 / S1_02 the primary demonstration. Display its HVAC,lighting,socket and ICT readings as separate systems,with a room total that follows the defined measurement boundaries.
+
+**Analytics**
+
+Show a current power trend and a short rolling live history. Prepare the architecture for longer historical periods when a persistent telemetry backend is available.
+
+These screens must be actual navigable Svelte pages or feature components,not just static screenshots embedded in the application.
+
+Other product modules such as alerts,energy sources,devices,sustainability,costs and reports may be introduced progressively. Do not sacrifice working architecture for superficial completeness.
+
+## 8. Prepare the telemetry architecture without pretending the backend is finished
+
+The frontend will eventually consume telemetry generated by Node RED and published through Mosquitto.
+
+The browser must not consume Node RED's Debug sidebar.
+
+Create a framework independent telemetry provider abstraction so the UI is not tied directly to a particular transport.
+
+Provide:
+
+A typed telemetry contract.
+
+A telemetry normalization service.
+
+A Svelte compatible reactive telemetry store.
+
+A working demonstration data provider.
+
+A configurable interface for a future live stream,using environment configuration such as `VITE_ECOSPHERE_TELEMETRY_WS_URL` if a WebSocket bridge is implemented.
+
+Do not assume that a browser can connect directly to Mosquitto's native MQTT TCP port. A suitable browser transport or backend bridge must exist.
+
+Do not claim that live telemetry is connected unless the actual connection is established and messages are being received and normalized.
+
+Clearly distinguish:
+
+`LIVE`
+
+`DEMO`
+
+`OFFLINE`
+
+The source origin must distinguish simulated data from measured data.
+
+Preserve the distinction between a missing measurement (`null`) and an actual reading of zero.
+
+Support both `real_power_w` and `active_power_w`,as well as `energy_kwh` and `active_energy_kwh`,because current telemetry producers do not all use identical field names.
+
+Do not rewrite the Node RED flows as part of this task.
+
+## 9. Keep the frontend architecture maintainable
+
+Separate the following responsibilities:
+
+Application shell and navigation.
+
+Feature pages.
+
+Reusable Svelte components.
+
+Telemetry transport.
+
+Telemetry normalization.
+
+Reactive state.
+
+Domain types.
+
+API communication.
+
+Charts and visualizations.
+
+Avoid duplicate implementations of the same feature.
+
+Avoid putting business logic inside presentation components when it belongs in a service or domain module.
+
+Do not introduce Redux or React specific state packages.
+
+Use a Svelte compatible solution only where shared state actually requires it.
+
+## 10. Acceptance criteria
+
+Do not declare the task complete until these checks have been satisfied:
+
+1. The production frontend runs through the Svelte 5 entry point.
+
+2. Vite successfully compiles the Svelte application.
+
+3. No production route or main application screen depends on React.
+
+4. React specific components are not imported into the production Svelte bundle.
+
+5. The application shell and primary navigation render correctly.
+
+6. The Dashboard,Sites,Live Energy and Room Details experiences can be navigated.
+
+7. The S1_02 demonstration can show typed and clearly labelled telemetry.
+
+8. Demo data is never falsely labelled as live physical data.
+
+9. The telemetry provider is configurable and does not hardcode a local URL throughout the application.
+
+10. Existing backend,API and database packages remain intact unless a specific incompatibility requires a documented change.
+
+11. Run the available frontend build,type checking and lint commands. Fix migration related errors instead of simply reporting them.
+
+12. Check for broken imports,missing packages,invalid Svelte syntax and stale React entry points.
+
+13. Confirm that the final built frontend is using Svelte and that its production bundle does not contain the React application runtime.
+
+## 11. Final report
+
+When finished,provide:
+
+The final production frontend architecture.
+
+The files created,modified and removed.
+
+The dependencies added and removed.
+
+Confirmation of which entry point Vite now uses.
+
+The build and type check results.
+
+Any remaining limitations preventing the real Node RED telemetry stream from reaching the frontend.
+
+Do not claim that the telemetry bridge works unless it has been implemented and tested.
+
+**Priority:** Correct the frontend framework first,preserve useful existing work,and then build on the clean Svelte 5 foundation. Do not redesign the entire backend or expand product scope before the actual Svelte application is running correctly.

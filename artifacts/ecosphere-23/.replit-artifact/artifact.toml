@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Ecosphere 2.3"
+description = "An energy intelligence platform for monitoring live power, navigating campus infrastructure, understanding telemetry quality, and spotting operational issues across buildings, floors, rooms, systems, and devices."
+version = "1.0.0"
+id = "artifacts/ecosphere-23"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22453
+
+[services.development]
+run = "pnpm --filter @workspace/ecosphere-23 run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ecosphere-23", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ecosphere-23/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22453"
+BASE_PATH = "/"

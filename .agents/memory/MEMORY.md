@@ -1,0 +1,1 @@
+- [Ecosphere metering boundaries](ecosphere-metering-boundaries.md) — Keep room circuit load and the shared floor ICT boundary separate to prevent double-counting.

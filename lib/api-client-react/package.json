@@ -7,9 +7,9 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@tanstack/react-query": "*"
+    "@tanstack/react-query": "catalog:"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=18"
   }
 }
