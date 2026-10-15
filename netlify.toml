@@ -1,0 +1,3 @@
+[build]
+  command = "pnpm --filter @workspace/ecosphere-23 run build"
+  publish = "artifacts/ecosphere-23/dist/public"

@@ -1,4 +1,4 @@
-# Ecosphere 2.3 (ecov230)
+# Ecosphere 2.3 
 
 **An energy management and energy intelligence platform for buildings,campuses and connected infrastructure.**
 
@@ -47,13 +47,13 @@ Run the frontend and API in separate terminals at the repository root:
 PORT=5173 BASE_PATH=/ pnpm --filter @workspace/ecosphere-23 dev
 ```
 
-Open <http://localhost:5173>. `PORT` is required; change it to another available port to override it. `BASE_PATH` is also required and should remain `/` for local root hosting.
+Open [http://localhost:5173](http://localhost:5173). `PORT` defaults to 5173 for the Svelte app; set it to another available port to override it. `BASE_PATH` defaults to `/` and can be changed when hosting under a subpath.
 
 ```sh
 PORT=5000 pnpm --filter @workspace/api-server run dev
 ```
 
-The API requires `PORT`; its documented local port is 5000 and can be changed to another available port. Verify its implemented health route at <http://localhost:5000/api/healthz> (adjust the URL if you changed the port). The API entry point currently exposes the health route only; it does not serve frontend telemetry.
+The API requires `PORT`; its documented local port is 5000 and can be changed to another available port. Verify its implemented health route at [http://localhost:5000/api/healthz](http://localhost:5000/api/healthz) (adjust the URL if you changed the port). The API entry point currently exposes the health route only; it does not serve frontend telemetry.
 
 Press **Ctrl+C** in each terminal to stop that process. The browser app does not require the API, database, Mosquitto, or Node-RED to display its local demo readings.
 
@@ -85,14 +85,18 @@ The root `build` runs the workspace type-check first, then builds packages that 
 
 ### Environment variables and local ports
 
-| Variable | Used by | Requirement / current behavior |
-|---|---|---|
-| `PORT` | Svelte Vite config and API entry point | Required by both; use 5173 for the frontend and 5000 for the API in the commands above. |
-| `BASE_PATH` | Svelte Vite config | Required by the frontend; use `/` for local root hosting. |
-| `VITE_NODE_RED_WS_URL` | Browser telemetry startup | Optional WebSocket URL for an independently provided browser-compatible bridge. Leave empty for demo data. This repository does not provide that bridge. |
-| `DATABASE_URL` | Drizzle database package/config | Required for `db push` or code that opens the PostgreSQL pool; not required by the current API health route or frontend demo. |
+| Variable                 | Used by                                | Requirement / current behavior                                                                                                                           |
+| ------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`                 | Svelte Vite config and API entry point | Optional for the frontend (defaults to 5173); required by the API (use 5000 in the command above).                                                       |
+| `BASE_PATH`            | Svelte Vite config                     | Optional; defaults to `/`, suitable for local root hosting and Netlify's root deployment.                                                              |
+| `VITE_NODE_RED_WS_URL` | Browser telemetry startup              | Optional WebSocket URL for an independently provided browser-compatible bridge. Leave empty for demo data. This repository does not provide that bridge. |
+| `DATABASE_URL`         | Drizzle database package/config        | Required for `db push` or code that opens the PostgreSQL pool; not required by the current API health route or frontend demo.                          |
 
 Ports 5173 and 5000 are application ports in the commands above. A local PostgreSQL server normally listens on 5432; this repository has no Compose file or database provisioning script. Mosquitto and Node-RED default ports are discussed below, but are external services and are not configured by this workspace.
+
+### Netlify static deployment
+
+`netlify.toml` configures Netlify to build only the production Svelte frontend and publish `artifacts/ecosphere-23/dist/public`. The `_redirects` file preserves the client-side routes. The app does not require the API, PostgreSQL, Mosquitto, or Node-RED for its local demo mode. Changes to workspace manifests/catalogs must be followed by a lockfile update and committed together with `pnpm-lock.yaml`; Netlify installs dependencies with a frozen lockfile.
 
 ### Mosquitto and Node-RED (optional, external)
 
@@ -116,7 +120,7 @@ Start Node-RED with its installed CLI:
 node-red
 ```
 
-The usual editor URL is <http://localhost:1880>. Import or create the required flows in that editor; none are supplied here. The existing files do not establish a repeating Inject cadence. To make a demo publish periodically, configure a repeat interval on the relevant Inject node in the editor; disable the repeat option or disable the Inject node to stop that cadence. Suggested intervals in the design notes are not an implemented setting.
+The usual editor URL is [http://localhost:1880](http://localhost:1880). Import or create the required flows in that editor; none are supplied here. The existing files do not establish a repeating Inject cadence. To make a demo publish periodically, configure a repeat interval on the relevant Inject node in the editor; disable the repeat option or disable the Inject node to stop that cadence. Suggested intervals in the design notes are not an implemented setting.
 
 Press **Ctrl+C** in each foreground terminal to stop Mosquitto or Node-RED. If these tools are managed as operating-system services instead, use that machine's service manager; service names and permissions are not defined by this repository.
 
@@ -377,15 +381,15 @@ The HVAC,lighting and socket figures sum to about 1,716.7 W of direct room load.
 
 Telemetry producers do not all use identical field names. The normalization layer should support both forms where applicable:
 
-| Measurement | Accepted field names |
-|---|---|
-| Active/real power | `active_power_w`, `real_power_w` |
+| Measurement        | Accepted field names                  |
+| ------------------ | ------------------------------------- |
+| Active/real power  | `active_power_w`, `real_power_w`  |
 | Accumulated energy | `active_energy_kwh`, `energy_kwh` |
-| Voltage | `voltage_v` |
-| Current | `current_a` |
-| Apparent power | `apparent_power_va` |
-| Power factor | `power_factor` |
-| Frequency | `frequency_hz` |
+| Voltage            | `voltage_v`                         |
+| Current            | `current_a`                         |
+| Apparent power     | `apparent_power_va`                 |
+| Power factor       | `power_factor`                      |
+| Frequency          | `frequency_hz`                      |
 
 Typical context fields include:
 
@@ -670,22 +674,22 @@ Cost management can similarly be layered on later using validated tariffs,utilit
 
 The following status is intentionally conservative and should be updated as work is tested.
 
-| Area | Current status |
-|---|---|
-| Svelte 5 frontend scaffold | Present in the repository; runtime/build validation still required |
-| Main product page components | Scaffolded; completeness and interactions must be tested |
-| HVAC simulation | Individual simulated telemetry has been produced |
-| Lighting simulation | Individual simulated telemetry has been produced |
-| Socket/projector simulation | Individual simulated telemetry has been produced; canonical topic/hierarchy must be verified against the latest code |
-| ICT / DBR simulation | Rack and endpoint telemetry have been produced |
-| Mosquitto MQTT broker | Used locally at `127.0.0.1:1883` in the current development setup |
-| Room aggregation | Implemented in prototype form and under validation; confirm all expected room components and correct single-room update behaviour |
-| Floor aggregation | Under development and intentionally paused |
-| Three BU power sources | Not yet modelled |
-| Periodic Inject schedule | Proposed for the demo; verify actual Node-RED configuration |
-| Node-RED-to-browser live bridge | Planned; do not claim operational until tested end to end |
-| Persistent history and live UI data API | Must be verified; do not assume the current provider persists data |
-| Production deployment and security | Not established by this prototype description |
+| Area                                    | Current status                                                                                                                    |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Svelte 5 frontend scaffold              | Present in the repository; runtime/build validation still required                                                                |
+| Main product page components            | Scaffolded; completeness and interactions must be tested                                                                          |
+| HVAC simulation                         | Individual simulated telemetry has been produced                                                                                  |
+| Lighting simulation                     | Individual simulated telemetry has been produced                                                                                  |
+| Socket/projector simulation             | Individual simulated telemetry has been produced; canonical topic/hierarchy must be verified against the latest code              |
+| ICT / DBR simulation                    | Rack and endpoint telemetry have been produced                                                                                    |
+| Mosquitto MQTT broker                   | Used locally at `127.0.0.1:1883` in the current development setup                                                               |
+| Room aggregation                        | Implemented in prototype form and under validation; confirm all expected room components and correct single-room update behaviour |
+| Floor aggregation                       | Under development and intentionally paused                                                                                        |
+| Three BU power sources                  | Not yet modelled                                                                                                                  |
+| Periodic Inject schedule                | Proposed for the demo; verify actual Node-RED configuration                                                                       |
+| Node-RED-to-browser live bridge         | Planned; do not claim operational until tested end to end                                                                         |
+| Persistent history and live UI data API | Must be verified; do not assume the current provider persists data                                                                |
+| Production deployment and security      | Not established by this prototype description                                                                                     |
 
 ## 18. Recommended development milestones
 
