@@ -154,21 +154,23 @@ That is the frontend's locally generated demo envelope, not evidence that a Node
 
 The connection badge and measurement provenance are different facts:
 
-- `DEMO` means the browser is generating local reference telemetry, explicitly marked `data_origin: "simulated"`.
+- `DEMO` means the browser is generating local reference telemetry, explicitly marked `data_origin: "simulated"`. It is always the startup mode, even if a live endpoint was saved previously.
 - `LIVE` means the browser WebSocket is open; it does not prove that readings are physical or measured.
 - `OFFLINE` means that configured WebSocket endpoint could not be reached or closed.
+- `CONNECTING`, `RECONNECTING`, and `ERROR` are shown distinctly. Malformed messages are rejected at the WebSocket boundary and reported without replacing data with demo values.
 - `data_origin` on an individual reading records provenance such as `simulated`, `measured`, `calculated`, `inferred`, or `reported`. Inspect it separately from the connection badge.
 
 ### Implemented behavior and validation caveats
 
-- The Svelte UI starts local simulated readings when no WebSocket URL is configured. With a URL configured, the browser expects JSON telemetry from an external WebSocket bridge and retries failed connections.
-- Room, device, and alert state is held in browser memory. The power chart keeps a short rolling buffer (up to 120 seconds / 300 points); there is no telemetry persistence or historical database query in the current UI.
+- The Svelte UI always starts in DEMO. Users must explicitly select **Connect LIVE** in Settings; a saved endpoint is not connected automatically. The endpoint must be a valid `ws://` or `wss://` URL for a browser-reachable bridge.
+- Room, device, and alert state is held in browser memory. DEMO energy is integrated from simulated power using elapsed sample time; the resulting kWh is session-only and not a daily or physical measurement. LIVE chart points are appended only from received room events. The rolling buffer is capped at 120 seconds / 300 points; there is no telemetry persistence or historical database query in the current UI.
+- Room S1_02 supports deterministic HVAC scenarios (normal, reduced, off, high cooling). HVAC power/state, direct room demand, and the chart update together. Lighting and socket demand retain bounded periodic variation. Floor ICT and endpoint attribution remain separate from room direct demand.
 - The current room snapshot is for `S1_02`. The displayed room direct load is HVAC + lighting + socket; ICT attribution and the shared DBR rack are kept outside that room total.
 - Site/floor parent totals are not calculated from child rooms. Floor aggregation is a design rule, not a validated implementation.
 - The three BU energy sources remain unmodelled; their IDs, types, capacities, and contribution are not available in this implementation.
 - The previously reported `store_invalid_shape` error named `rack` and was traced to the Sites page's `$rack` template reference even though `rack` is a `$derived` value, not a store. That source reference was changed to `rack`; this repository session has not completed a browser runtime check, so do not treat the runtime fix as independently verified.
 - A previous full workspace type-check reported Vite plugin type incompatibilities in `artifacts/mockup-sandbox/vite.config.ts`. That config has since been simplified, but the full type-check has not been rerun here.
-- Build/type-check commands were attempted in the current environment, but command execution was blocked by the host sandbox's missing `slirp4netns` support. Re-run the commands above in a normal local terminal and record their actual results.
+- The focused frontend production build and TypeScript check passed after the current changes, including the UI library integration. No browser end-to-end test suite is configured, so the live bridge has not been runtime-verified against an external endpoint during this change.
 
 ## 1. Product vision
 
@@ -254,6 +256,8 @@ pnpm-lock.yaml        Dependency lockfile
 The production Ecosphere frontend is **Svelte 5 + TypeScript + Vite** and mounts through `artifacts/ecosphere-23/src/main.ts`. `artifacts/mockup-sandbox` is a separate React mockup and is not imported by the production frontend.
 
 The workspace also contains an Express 5 API server, a PostgreSQL/Drizzle schema package, and Zod/OpenAPI packages. The current API entry point mounts only `/api/healthz`; it does not currently persist telemetry or expose a browser telemetry stream. The database package is not required to run the frontend demo or API health route.
+
+The production UI uses Tailwind CSS 4.3 with Flowbite Svelte 1.33 for standard form inputs and actions, and Bits UI 2.19 for the accessible campus/building/floor/room selectors. Flowbite Svelte's declared peer ranges (Svelte `^5.40`, Tailwind `^4.1.4`) and Bits UI's Svelte/date peers are met by the app dependencies. SVAR Kanban is intentionally not installed: the current local alert status workflow does not benefit from a board.
 
 ### Current frontend components
 

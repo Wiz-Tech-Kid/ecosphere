@@ -1,7 +1,7 @@
 export type DataQuality = 'good' | 'partial' | 'missing' | 'unknown';
 export type DataOrigin = 'simulated' | 'measured' | 'calculated' | 'inferred' | 'reported' | 'unknown';
 export type ConnectionMode = 'DEMO' | 'LIVE';
-export type ConnectionStatus = 'DEMO' | 'CONNECTING' | 'LIVE' | 'OFFLINE';
+export type ConnectionStatus = 'DEMO' | 'CONNECTING' | 'LIVE' | 'RECONNECTING' | 'OFFLINE' | 'ERROR';
 
 export interface TelemetryMeasurements {
   voltage_v?: number | null;

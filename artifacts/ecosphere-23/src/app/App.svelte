@@ -9,7 +9,7 @@
   import Alerts from '../features/alerts/Alerts.svelte';
   import Settings from '../features/settings/Settings.svelte';
   import SecondaryModules from '../features/secondary/SecondaryModules.svelte';
-  import { connection, startDemo, startLive, stopTelemetry } from '../stores/telemetry';
+  import { connection, startDemo, stopTelemetry } from '../stores/telemetry';
 
   let menuOpen = $state(false);
   let theme = $state<'dark' | 'light'>(localStorage.getItem('ecosphere-theme') === 'light' ? 'light' : 'dark');
@@ -27,7 +27,7 @@
     '/demand-response':'Demand Response','/rates':'Rate Analysis'
   };
   let currentTitle = $derived(path.startsWith('/rooms/') ? 'Room details' : (titles[path] || 'Overview'));
-  let connectionLabel = $derived($connection.status === 'DEMO' ? 'Reference data' : $connection.status);
+  let connectionLabel = $derived($connection.status === 'DEMO' ? 'DEMO · simulated' : $connection.status);
 
   $effect(() => {
     document.documentElement.dataset.theme = theme;
@@ -35,9 +35,7 @@
   });
 
   onMount(() => {
-    const endpoint = localStorage.getItem('ecosphere-ws-url') || import.meta.env.VITE_NODE_RED_WS_URL || '';
-    if (endpoint) startLive(endpoint);
-    else startDemo();
+    startDemo();
     document.addEventListener('click', navigatePageLink);
     const update = () => { path = window.location.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/'; };
     window.addEventListener('popstate', update);
@@ -95,7 +93,7 @@
       <div class="mode-card">
         <div class="mode-title">TELEMETRY SOURCE</div>
         <div class="mode-line"><span class="mode-pill">{connectionLabel}</span><span class="dot" class:live={$connection.status === 'LIVE'}></span></div>
-        <div class="mode-desc">{#if $connection.status === 'DEMO'}Reference values · not measured{:else if $connection.status === 'LIVE'}Node-RED stream connected{:else if $connection.status === 'OFFLINE'}Live endpoint unavailable{:else}Opening configured connection{/if}</div>
+        <div class="mode-desc">{#if $connection.status === 'DEMO'}Simulated reference values · not measured{:else if $connection.status === 'LIVE'}WebSocket stream established{:else if $connection.status === 'OFFLINE' || $connection.status === 'ERROR'}Live endpoint unavailable{:else if $connection.status === 'RECONNECTING'}Stream interrupted · reconnecting{:else}Opening configured connection{/if}</div>
       </div>
     </div>
   </aside>

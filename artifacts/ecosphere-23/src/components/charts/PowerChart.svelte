@@ -6,7 +6,9 @@
   $: points = $history;
   $: hasValues = points.some((point) => [point.total, point.hvac, point.lighting, point.socket, point.ict].some((value) => value !== null));
   $: latestTime = points.length ? points[points.length - 1].time : Date.now();
-  $: scaleW = Math.max(2000, ...points.flatMap((point) => [point.total, point.hvac, point.lighting, point.socket, point.ict].filter((value): value is number => value !== null))) * 1.12;
+  $: scaleW = Math.max(200, ...points.flatMap((point) => [point.total, point.hvac, point.lighting, point.socket, point.ict].filter((value): value is number => value !== null))) * 1.12;
+  $: axisLabels = [scaleW, scaleW * 0.75, scaleW * 0.5, scaleW * 0.25, 0]
+    .map((value) => `${(value / 1000).toFixed(value >= 1000 ? 1 : 2)} kW`);
   function xFor(time: number) {
     const progress = Math.max(0, Math.min(1, (time - (latestTime - 120000)) / 120000));
     return 44 + progress * 900;
@@ -35,8 +37,8 @@
     {#each [40, 80, 120, 160, 200] as y}
       <line class="chart-grid" x1="43" x2="950" y1={y} y2={y} />
     {/each}
-    {#each ['2.0', '1.5', '1.0', '0.5', '0'] as label, i}
-      <text class="chart-label" x="2" y={44 + i * 39}>{label} kW</text>
+    {#each axisLabels as label, i}
+      <text class="chart-label" x="2" y={44 + i * 39}>{label}</text>
     {/each}
     {#each Object.keys(show) as key}
       {#if show[key as keyof typeof show]}

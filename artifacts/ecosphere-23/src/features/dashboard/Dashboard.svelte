@@ -17,7 +17,7 @@
     const timer = setInterval(() => now = Date.now(), 1000);
     return () => clearInterval(timer);
   });
-  let stale = $derived($connection.status === 'LIVE' && $snapshot.powerW !== null && (!Number.isFinite(new Date($snapshot.timestamp).getTime()) || now - new Date($snapshot.timestamp).getTime() > 10000));
+  let stale = $derived($connection.status !== 'DEMO' && $snapshot.powerW !== null && (!Number.isFinite(new Date($snapshot.timestamp).getTime()) || now - new Date($snapshot.timestamp).getTime() > 10000));
   let maxW = $derived(Math.max(1, ...[$snapshot.components.hvac, $snapshot.components.lighting, $snapshot.components.socket].filter((v): v is number => v !== null).map(Math.abs)));
 </script>
 
@@ -27,11 +27,11 @@
     <div class="actions"><a class="btn" href={appHref('/sites')}>Explore campus</a><a class="btn primary" href={appHref('/live-energy')}>Open live monitor</a></div>
   </div>
   <div class="mode-banner"><span class="tag {$connection.status === 'LIVE' ? 'good' : $connection.status === 'OFFLINE' ? 'offline' : 'unknown'}">{sourceLabel($connection.status)}</span>
-    <span>{#if $connection.status === 'LIVE'}A live stream is established. Campus and building aggregates remain unavailable unless their boundaries are reported.{:else if $connection.status === 'OFFLINE'}Live endpoint unavailable. No reference readings are substituted.{:else}Reference data is shown for room S1_02 only; this is not a campus-wide measured total.{/if}</span>
+    <span>{#if $connection.status === 'LIVE'}A live stream is established. Campus and building aggregates remain unavailable unless their boundaries are reported.{:else if $connection.status === 'DEMO'}Simulated reference data is shown for room S1_02 only; this is not a campus-wide measured total.{:else if $connection.status === 'CONNECTING' || $connection.status === 'RECONNECTING'}Waiting for a live stream. No reference readings are substituted.{:else}Live endpoint unavailable. No reference readings are substituted.{/if}</span>
   </div>
   <div class="grid stats">
     <div class="panel metric"><div class="metric-label">S1_02 · direct power</div><div class="metric-value accent-value">{power($snapshot.powerW)}</div><div class="metric-foot">{stale ? 'Last reported value · stale' : 'HVAC + lighting + socket'}</div></div>
-    <div class="panel metric"><div class="metric-label">Room energy today</div><div class="metric-value">{$snapshot.energyKwh === null ? 'Unavailable' : `${$snapshot.energyKwh.toFixed(2)} kWh`}</div><div class="metric-foot">{$snapshot.energyKwh === null ? 'No usable energy measurement' : sourceLabel($connection.status)}</div></div>
+    <div class="panel metric"><div class="metric-label">{$snapshot.origin === 'simulated' ? 'Room energy · demo session' : 'Room energy reported'}</div><div class="metric-value">{$snapshot.energyKwh === null ? 'Unavailable' : `${$snapshot.energyKwh.toFixed(4)} kWh`}</div><div class="metric-foot">{$snapshot.energyKwh === null ? 'No usable energy measurement' : $snapshot.origin === 'simulated' ? 'Simulated integration · this session' : 'Period depends on source contract'}</div></div>
     <div class="panel metric"><div class="metric-label">Campus peak</div><div class="metric-value" style="font-size:21px">Unavailable</div><div class="metric-foot">No complete site boundary</div></div>
     <div class="panel metric"><div class="metric-label">Energy intensity</div><div class="metric-value" style="font-size:21px">Unavailable</div><div class="metric-foot">Floor area is not supplied</div></div>
   </div>

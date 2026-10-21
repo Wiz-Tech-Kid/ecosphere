@@ -1,5 +1,6 @@
 import path from 'path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 const rawPort = process.env.PORT ?? '5173';
@@ -15,6 +16,7 @@ export default defineConfig({
   base: basePath,
   plugins: [
     svelte(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {

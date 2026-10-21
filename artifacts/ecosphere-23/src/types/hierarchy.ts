@@ -1,3 +1,5 @@
+import type { DataOrigin } from './telemetry';
+
 export interface RoomSnapshot {
   roomId: string;
   powerW: number | null;
@@ -7,4 +9,5 @@ export interface RoomSnapshot {
   occupancy: number | null;
   status: string;
   quality: string;
+  origin: DataOrigin;
 }
